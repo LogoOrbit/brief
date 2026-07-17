@@ -1,137 +1,222 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LogoOrbit — Logo Design Brief</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>window.jspdf||document.write('<script src="jspdf.umd.min.js"><\/script>')</script>
 <style>
+/* ─────────── THEME TOKENS ─────────── */
+:root{
+  --bg:#f5f6fa; --bg-grad:radial-gradient(1200px 500px at 50% -10%,#e8eaff 0%,transparent 60%);
+  --surface:#ffffff; --surface2:#f8f9fc; --border:#e5e7f0; --border-strong:#d4d7e5;
+  --text:#0f172a; --text2:#5b6478; --text3:#9aa1b5;
+  --accent:#4f46e5; --accent2:#7c3aed; --accent-soft:#eef0ff; --accent-border:#c7cbff;
+  --ok:#059669; --ok-soft:#ecfdf5; --err:#e11d48;
+  --shadow:0 1px 2px rgba(15,23,42,.04),0 8px 24px rgba(15,23,42,.06);
+  --shadow-lg:0 4px 12px rgba(15,23,42,.06),0 24px 60px rgba(79,70,229,.10);
+  --ring:0 0 0 3px rgba(79,70,229,.15);
+}
+[data-theme=dark]{
+  --bg:#0a0d16; --bg-grad:radial-gradient(1200px 500px at 50% -10%,rgba(79,70,229,.16) 0%,transparent 60%);
+  --surface:#121826; --surface2:#0e1420; --border:#232b3d; --border-strong:#323c54;
+  --text:#f1f3fa; --text2:#98a2ba; --text3:#5c6580;
+  --accent:#818cf8; --accent2:#a78bfa; --accent-soft:rgba(99,102,241,.14); --accent-border:rgba(129,140,248,.45);
+  --ok:#34d399; --ok-soft:rgba(52,211,153,.12); --err:#fb7185;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  --shadow-lg:0 4px 12px rgba(0,0,0,.4),0 24px 60px rgba(99,102,241,.15);
+  --ring:0 0 0 3px rgba(129,140,248,.22);
+}
+/* ─────────── BASE ─────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:'Syne',sans-serif;background:#080811;min-height:100vh;padding:2rem 1rem 5rem;color:#fff}
-.container{max-width:660px;margin:0 auto}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);background-image:var(--bg-grad);background-repeat:no-repeat;min-height:100vh;color:var(--text);transition:background .3s,color .3s;padding-bottom:5rem}
+.wrap{max-width:720px;margin:0 auto;padding:0 1.1rem}
 
-.brand{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:2rem}
-.brand-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#db2777);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:#fff}
-.brand-name{font-size:1.4rem;font-weight:700;color:#fff;letter-spacing:-0.5px}
-.brand-name span{color:#a78bfa}
+/* ─────────── TOP BAR ─────────── */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0;margin-bottom:1.6rem}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none}
+.orbit-logo{width:40px;height:40px;position:relative;flex-shrink:0}
+.orbit-logo .core{position:absolute;inset:9px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.orbit-logo .ring{position:absolute;inset:0;border:2px solid var(--accent-border);border-radius:50%;transform:rotate(-24deg) scaleY(.48)}
+.orbit-logo .moon{position:absolute;top:1px;left:26px;width:7px;height:7px;border-radius:50%;background:var(--accent2)}
+.brand-name{font-family:'Sora',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:-.5px;color:var(--text)}
+.brand-name em{font-style:normal;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tbtns{display:flex;gap:8px}
+.tswitch{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:5px;cursor:pointer;box-shadow:var(--shadow)}
+.tswitch span{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;color:var(--text3)}
+.tswitch span.on{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
 
+/* ─────────── HERO ─────────── */
 .hero{text-align:center;margin-bottom:2rem}
-.hero h1{font-size:1.9rem;font-weight:700;line-height:1.2;margin-bottom:.5rem;letter-spacing:-0.5px}
-.hero h1 em{font-style:normal;background:linear-gradient(90deg,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero p{color:rgba(255,255,255,0.4);font-size:14px}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--accent-soft);border:1px solid var(--accent-border);color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.4px;border-radius:100px;padding:6px 14px;margin-bottom:1rem}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.hero h1{font-family:'Sora',sans-serif;font-size:clamp(1.7rem,4.5vw,2.4rem);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:.6rem}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{color:var(--text2);font-size:14.5px;max-width:440px;margin:0 auto;line-height:1.6}
 
-.pbar{height:3px;background:rgba(255,255,255,0.08);border-radius:100px;margin-bottom:1rem;overflow:hidden}
-.pfill{height:100%;background:linear-gradient(90deg,#7c3aed,#db2777);border-radius:100px;transition:width .4s ease;width:0%}
-.plabel{text-align:center;font-size:12px;color:rgba(255,255,255,0.3);margin-bottom:1.5rem}
+/* ─────────── STEP RAIL ─────────── */
+.rail{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.6rem;position:relative;padding:0 4px}
+.rail::before{content:'';position:absolute;top:15px;left:24px;right:24px;height:2px;background:var(--border)}
+.rail .bar{position:absolute;top:15px;left:24px;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s ease;width:0}
+.rstep{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;width:48px;cursor:default}
+.rstep .dot{width:32px;height:32px;border-radius:50%;background:var(--surface);border:2px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;color:var(--text3);transition:all .25s}
+.rstep .rl{font-size:10px;font-weight:600;color:var(--text3);text-align:center;letter-spacing:.2px;transition:color .25s}
+.rstep.cur .dot{border-color:var(--accent);color:var(--accent);box-shadow:var(--ring)}
+.rstep.cur .rl{color:var(--accent)}
+.rstep.done .dot{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff}
+.rstep.done .rl{color:var(--text2)}
+@media(max-width:560px){.rstep .rl{display:none}.rail::before,.rail .bar{top:15px}}
 
-.card{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.1);border-radius:20px;padding:1.75rem;animation:fadeUp .3s ease}
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.step-lbl{font-size:11px;color:#a78bfa;letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-bottom:.4rem}
-.card-title{font-size:1.15rem;font-weight:700;color:#fff;margin-bottom:1.4rem}
+/* ─────────── CARD ─────────── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:2rem;box-shadow:var(--shadow-lg);animation:rise .35s ease}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.chead{margin-bottom:1.6rem}
+.ck{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.35rem}
+.ct{font-family:'Sora',sans-serif;font-size:1.35rem;font-weight:700;letter-spacing:-.4px}
+.cs{font-size:13.5px;color:var(--text2);margin-top:.3rem;line-height:1.5}
 
-.q{margin-bottom:1.3rem}
+.q{margin-bottom:1.45rem}
 .q:last-of-type{margin-bottom:0}
-.ql{display:block;font-size:13px;color:rgba(255,255,255,0.55);margin-bottom:.55rem;line-height:1.4}
-.req{color:#f472b6}
-.opt{opacity:.4;font-size:11px}
+.ql{display:block;font-size:13.5px;font-weight:600;color:var(--text);margin-bottom:.55rem;line-height:1.45}
+.req{color:var(--err)}
+.opt{font-weight:500;color:var(--text3);font-size:12px}
 
-input[type=text],input[type=email],textarea{width:100%;background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;font-family:'Syne',sans-serif;font-size:14px;padding:10px 14px;outline:none;transition:border-color .2s}
-input:focus,textarea:focus{border-color:rgba(167,139,250,0.6);background:rgba(255,255,255,0.08)}
-input::placeholder,textarea::placeholder{color:rgba(255,255,255,0.18)}
-textarea{resize:vertical;min-height:70px;line-height:1.5}
-input.err,textarea.err{border-color:rgba(244,114,182,.7)}
+input[type=text],input[type=email],textarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:14.5px;padding:12px 15px;outline:none;transition:border-color .2s,box-shadow .2s}
+input:focus,textarea:focus{border-color:var(--accent);box-shadow:var(--ring);background:var(--surface)}
+input::placeholder,textarea::placeholder{color:var(--text3)}
+textarea{resize:vertical;min-height:88px;line-height:1.6}
+input.err,textarea.err{border-color:var(--err)}
 
-.chips{display:flex;flex-wrap:wrap;gap:7px}
-.chip{background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.13);border-radius:100px;color:rgba(255,255,255,0.55);font-size:13px;font-family:'Syne',sans-serif;padding:8px 15px;cursor:pointer;transition:all .18s;user-select:none}
-.chip:hover{border-color:rgba(167,139,250,0.5);color:#e9d5ff}
-.chip.on{background:rgba(124,58,237,0.25);border-color:rgba(167,139,250,0.7);color:#c4b5fd}
-.otherbox{margin-top:8px;display:none}
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--surface2);border:1.5px solid var(--border);border-radius:100px;color:var(--text2);font-size:13.5px;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;padding:9px 16px;cursor:pointer;transition:all .18s;user-select:none}
+.chip:hover{border-color:var(--accent-border);color:var(--accent)}
+.chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.otherbox{margin-top:9px;display:none}
 .otherbox.show{display:block}
 
-.igrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
-.ic-btn{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px 8px;cursor:pointer;transition:all .18s;user-select:none;text-align:center}
-.ic-btn:hover{border-color:rgba(167,139,250,0.4);background:rgba(124,58,237,0.08)}
-.ic-btn.on{background:rgba(124,58,237,0.2);border-color:rgba(167,139,250,0.7)}
-.ic-btn .ico{font-size:20px;margin-bottom:5px;display:block;color:#c4b5fd}
-.ic-btn .lbl{font-size:12.5px;color:rgba(255,255,255,0.65);font-weight:600;display:block}
-.ic-btn .sub{font-size:10.5px;color:rgba(255,255,255,0.3);display:block;margin-top:2px;line-height:1.3}
-.ic-btn.on .lbl{color:#c4b5fd}
+/* icon cards */
+.igrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:9px}
+.ic-btn{background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;padding:15px 10px;cursor:pointer;transition:all .18s;user-select:none;text-align:center;position:relative}
+.ic-btn:hover{border-color:var(--accent-border);transform:translateY(-1px)}
+.ic-btn.on{background:var(--accent-soft);border-color:var(--accent);box-shadow:var(--ring)}
+.ic-btn.on::after{content:'✓';position:absolute;top:7px;right:9px;width:17px;height:17px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center}
+.ic-btn .ico{font-size:19px;font-weight:800;margin-bottom:6px;display:block;color:var(--accent);font-family:'Sora',sans-serif}
+.ic-btn .lbl{font-size:13px;color:var(--text);font-weight:700;display:block}
+.ic-btn .sub{font-size:10.5px;color:var(--text3);display:block;margin-top:3px;line-height:1.35}
 
 /* palettes */
-.palgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:12px}
-.pal{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.12);border-radius:12px;padding:10px;cursor:pointer;transition:all .18s;user-select:none}
-.pal:hover{border-color:rgba(167,139,250,0.4)}
-.pal.on{background:rgba(124,58,237,0.18);border-color:rgba(167,139,250,0.7)}
-.pal .sw{display:flex;gap:4px;margin-bottom:6px}
-.pal .sw i{flex:1;height:22px;border-radius:5px}
-.pal .pn{font-size:11.5px;color:rgba(255,255,255,0.55);font-weight:600;text-align:center;display:block}
-.pal.on .pn{color:#c4b5fd}
+.palgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:9px;margin-bottom:14px}
+.pal{background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;padding:11px;cursor:pointer;transition:all .18s;user-select:none;position:relative}
+.pal:hover{border-color:var(--accent-border);transform:translateY(-1px)}
+.pal.on{border-color:var(--accent);box-shadow:var(--ring)}
+.pal.on::after{content:'✓';position:absolute;top:7px;right:9px;width:17px;height:17px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center}
+.pal .sw{display:flex;gap:4px;margin-bottom:7px}
+.pal .sw i{flex:1;height:24px;border-radius:6px}
+.pal .pn{font-size:12px;color:var(--text2);font-weight:700;text-align:center;display:block}
+.pal.on .pn{color:var(--accent)}
 
-.cpresets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-.cp{width:32px;height:32px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s,border-color .15s;position:relative;flex-shrink:0}
-.cp:hover{transform:scale(1.15)}
-.cp.on{border-color:#fff;transform:scale(1.12)}
-.cp.on::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;text-shadow:0 1px 3px rgba(0,0,0,.9)}
-.crow{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.crow label{font-size:12px;color:rgba(255,255,255,.4);white-space:nowrap}
-input[type=color]{width:36px;height:32px;border-radius:8px;border:0.5px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);cursor:pointer;padding:2px}
-.chex{flex:1;max-width:110px}
-.addbtn{background:rgba(124,58,237,.2);border:0.5px solid rgba(167,139,250,.4);border-radius:8px;color:#a78bfa;font-size:12px;font-family:'Syne',sans-serif;padding:7px 12px;cursor:pointer;white-space:nowrap;transition:all .18s}
-.addbtn:hover{background:rgba(124,58,237,.35)}
-.seltags{display:flex;flex-wrap:wrap;gap:6px;min-height:8px}
-.stag{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.06);border:0.5px solid rgba(255,255,255,.12);border-radius:100px;padding:4px 10px 4px 6px;font-size:12px;color:rgba(255,255,255,.55)}
-.swatch{width:14px;height:14px;border-radius:50%;flex-shrink:0}
-.rm{cursor:pointer;color:rgba(255,255,255,.3);margin-left:3px;font-size:15px;line-height:1}
-.rm:hover{color:#f472b6}
+/* colors */
+.cpresets{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:12px}
+.cp{width:34px;height:34px;border-radius:50%;cursor:pointer;border:2px solid var(--border-strong);transition:transform .15s,box-shadow .15s;position:relative;flex-shrink:0}
+.cp:hover{transform:scale(1.14)}
+.cp.on{box-shadow:0 0 0 2px var(--surface),0 0 0 4.5px var(--accent);transform:scale(1.08)}
+.cp.on::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;text-shadow:0 1px 3px rgba(0,0,0,.85)}
+.crow{display:flex;align-items:center;gap:9px;margin-bottom:9px;flex-wrap:wrap}
+.crow label{font-size:12.5px;font-weight:600;color:var(--text2);white-space:nowrap}
+input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface2);cursor:pointer;padding:3px}
+.chex{flex:1;max-width:120px}
+.addbtn{background:var(--accent-soft);border:1.5px solid var(--accent-border);border-radius:10px;color:var(--accent);font-size:12.5px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;padding:8px 14px;cursor:pointer;white-space:nowrap;transition:all .18s}
+.addbtn:hover{border-color:var(--accent)}
+.seltags{display:flex;flex-wrap:wrap;gap:7px;min-height:6px}
+.stag{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1.5px solid var(--border);border-radius:100px;padding:5px 11px 5px 7px;font-size:12.5px;font-weight:600;color:var(--text2)}
+.swatch{width:15px;height:15px;border-radius:50%;flex-shrink:0;border:1px solid var(--border-strong)}
+.rm{cursor:pointer;color:var(--text3);margin-left:3px;font-size:15px;line-height:1}
+.rm:hover{color:var(--err)}
 
-.nav{display:flex;gap:10px;margin-top:1.5rem}
-.bbk{flex:1;background:rgba(255,255,255,.06);border:0.5px solid rgba(255,255,255,.12);border-radius:12px;color:rgba(255,255,255,.45);font-family:'Syne',sans-serif;font-size:14px;font-weight:500;padding:12px;cursor:pointer;transition:all .18s}
-.bbk:hover{background:rgba(255,255,255,.1)}
-.bnx{flex:2;background:linear-gradient(135deg,#7c3aed,#db2777);border:none;border-radius:12px;color:#fff;font-family:'Syne',sans-serif;font-size:14px;font-weight:600;padding:12px;cursor:pointer;transition:opacity .2s,transform .15s}
-.bnx:hover{opacity:.9;transform:translateY(-1px)}
-.bnx:disabled{opacity:.4;cursor:not-allowed;transform:none}
+/* nav */
+.nav{display:flex;gap:10px;margin-top:1.7rem}
+.bbk{flex:1;background:var(--surface2);border:1.5px solid var(--border);border-radius:13px;color:var(--text2);font-family:'Plus Jakarta Sans',sans-serif;font-size:14.5px;font-weight:600;padding:13px;cursor:pointer;transition:all .18s}
+.bbk:hover{border-color:var(--border-strong);color:var(--text)}
+.bnx{flex:2;background:linear-gradient(135deg,#4f46e5,#7c3aed);border:none;border-radius:13px;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:14.5px;font-weight:700;padding:13px;cursor:pointer;transition:all .18s;box-shadow:0 6px 18px rgba(79,70,229,.35)}
+.bnx:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(79,70,229,.4)}
+.bnx:active{transform:translateY(0)}
+.bnx:disabled{opacity:.45;cursor:not-allowed;transform:none}
 .bsolo{flex:1}
-.stepwarn{display:none;color:#f472b6;font-size:12.5px;text-align:center;margin-top:10px}
+.stepwarn{display:none;color:var(--err);font-size:13px;font-weight:600;text-align:center;margin-top:12px}
 .stepwarn.show{display:block}
 
-.ty{display:none;text-align:center;padding:3rem 1.5rem;background:rgba(255,255,255,.04);border:0.5px solid rgba(124,58,237,.3);border-radius:20px;animation:fadeUp .4s ease}
-.ty .big{font-size:54px;margin-bottom:1rem}
-.ty .badge{display:inline-block;background:rgba(52,211,153,.15);border:1px solid rgba(52,211,153,.4);color:#34d399;font-size:12px;font-weight:700;letter-spacing:2.5px;border-radius:100px;padding:7px 20px;margin-bottom:1.2rem}
-.ty h2{font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:.5rem}
-.ty p{color:rgba(255,255,255,.4);font-size:14px;line-height:1.7;margin-bottom:1.4rem}
-.pdfbtn{background:rgba(124,58,237,.25);border:1px solid rgba(167,139,250,.5);border-radius:12px;color:#c4b5fd;font-family:'Syne',sans-serif;font-size:13.5px;font-weight:600;padding:11px 22px;cursor:pointer;transition:all .18s}
-.pdfbtn:hover{background:rgba(124,58,237,.4)}
+/* review */
+.rev-sec{border:1.5px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.rev-h{display:flex;align-items:center;justify-content:space-between;background:var(--surface2);padding:11px 15px;font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent)}
+.rev-h button{background:none;border:none;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif;font-size:11.5px;font-weight:600;cursor:pointer;text-decoration:underline}
+.rev-h button:hover{color:var(--accent)}
+.rev-b{padding:6px 15px 12px}
+.rev-row{display:flex;gap:12px;padding:7px 0;border-bottom:1px dashed var(--border);font-size:13px}
+.rev-row:last-child{border-bottom:none}
+.rev-row b{flex:0 0 42%;color:var(--text3);font-weight:600}
+.rev-row span{flex:1;color:var(--text);font-weight:500;word-break:break-word}
+
+/* submitted */
+.ty{display:none;text-align:center;padding:3.2rem 1.8rem;background:var(--surface);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow-lg);animation:rise .4s ease}
+.ty .rocket{font-size:52px;margin-bottom:1.1rem;display:block;animation:float 2.6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.ty .badge{display:inline-flex;align-items:center;gap:7px;background:var(--ok-soft);border:1.5px solid var(--ok);color:var(--ok);font-size:12.5px;font-weight:800;letter-spacing:2.5px;border-radius:100px;padding:8px 22px;margin-bottom:1.3rem}
+.ty h2{font-family:'Sora',sans-serif;font-size:1.6rem;font-weight:800;letter-spacing:-.5px;margin-bottom:.55rem}
+.ty p{color:var(--text2);font-size:14.5px;line-height:1.75;margin-bottom:1.5rem}
+.pdfbtn{background:var(--accent-soft);border:1.5px solid var(--accent-border);border-radius:13px;color:var(--accent);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;padding:12px 24px;cursor:pointer;transition:all .18s}
+.pdfbtn:hover{border-color:var(--accent);transform:translateY(-1px)}
+
+.foot{text-align:center;font-size:12px;color:var(--text3);margin-top:2rem}
 </style>
 </head>
 <body>
-<div class="container">
+<div class="wrap">
 
-<div class="brand">
-  <div class="brand-icon">LO</div>
-  <div class="brand-name">Logo<span>Orbit</span></div>
+<div class="topbar">
+  <a class="brand" href="#">
+    <div class="orbit-logo"><div class="ring"></div><div class="core"></div><div class="moon"></div></div>
+    <span class="brand-name">Logo<em>Orbit</em></span>
+  </a>
+  <div class="tbtns">
+    <div class="tswitch" id="tsw" title="Toggle theme">
+      <span id="t-light" class="on">☀️</span>
+      <span id="t-dark">🌙</span>
+    </div>
+  </div>
 </div>
 
 <div class="hero">
-  <h1>Tell us about your<br><em>dream logo</em></h1>
-  <p>Tap to pick answers — takes about 4 minutes. Fields marked <span class="req">*</span> are required.</p>
+  <div class="eyebrow">LOGO DESIGN BRIEF</div>
+  <h1>Let's design your<br><em>perfect logo</em></h1>
+  <p>Answer with quick taps — most questions have ready-made options. Takes about 4 minutes. Fields marked <span class="req">*</span> are required.</p>
 </div>
 
-<div class="pbar"><div class="pfill" id="pf"></div></div>
-<div class="plabel" id="plbl">Step 1 of 7</div>
+<div class="rail" id="rail">
+  <div class="bar" id="railbar"></div>
+  <div class="rstep cur"><div class="dot">1</div><div class="rl">You</div></div>
+  <div class="rstep"><div class="dot">2</div><div class="rl">Idea</div></div>
+  <div class="rstep"><div class="dot">3</div><div class="rl">Style</div></div>
+  <div class="rstep"><div class="dot">4</div><div class="rl">Colors</div></div>
+  <div class="rstep"><div class="dot">5</div><div class="rl">Usage</div></div>
+  <div class="rstep"><div class="dot">6</div><div class="rl">Extras</div></div>
+  <div class="rstep"><div class="dot">7</div><div class="rl">Process</div></div>
+  <div class="rstep"><div class="dot">8</div><div class="rl">Review</div></div>
+</div>
 
 <form id="brief">
 
-<!-- ── STEP 1 : ABOUT YOU ─────────────────────────── -->
+<!-- STEP 1 -->
 <div class="card" id="s1">
-  <div class="step-lbl">Step 1 of 7</div>
-  <div class="card-title">About you &amp; your brand</div>
+  <div class="chead"><div class="ck">Step 1 · About you</div><div class="ct">You &amp; your brand</div><div class="cs">The basics so we know who we're designing for.</div></div>
   <div class="q"><span class="ql">Your full name <span class="req">*</span></span><input type="text" name="name" data-req placeholder="Jane Smith"></div>
   <div class="q"><span class="ql">Your email <span class="req">*</span></span><input type="email" name="email" data-req placeholder="jane@company.com"></div>
   <div class="q"><span class="ql">Company / Organisation name <span class="req">*</span></span><input type="text" name="company" data-req placeholder="e.g. Acme Studios LLC"></div>
-  <div class="q"><span class="ql">Exact logo name (as it should appear in the logo) <span class="req">*</span></span><input type="text" name="logo_name" data-req placeholder="e.g. ACME"></div>
+  <div class="q"><span class="ql">Exact logo name <span class="opt">(as it should appear in the logo)</span> <span class="req">*</span></span><input type="text" name="logo_name" data-req placeholder="e.g. ACME"></div>
   <div class="q"><span class="ql">Tagline / slogan <span class="opt">(leave blank if none)</span></span><input type="text" name="tagline" placeholder="e.g. Design that orbits excellence"></div>
   <div class="q"><span class="ql">Industry / niche <span class="req">*</span></span>
     <div class="chips" data-chips="industry">
@@ -153,13 +238,12 @@ input[type=color]{width:36px;height:32px;border-radius:8px;border:0.5px solid rg
     <input type="hidden" name="industry" data-reqhidden>
   </div>
   <div class="stepwarn">Please fill the required fields above.</div>
-  <div class="nav"><button type="button" class="bnx bsolo" onclick="go(2)">Next →</button></div>
+  <div class="nav"><button type="button" class="bnx bsolo" onclick="go(2)">Continue →</button></div>
 </div>
 
-<!-- ── STEP 2 : CONCEPT & MESSAGE ─────────────────── -->
+<!-- STEP 2 -->
 <div class="card" id="s2" style="display:none">
-  <div class="step-lbl">Step 2 of 7</div>
-  <div class="card-title">Your idea &amp; the message</div>
+  <div class="chead"><div class="ck">Step 2 · The idea</div><div class="ct">Your concept &amp; message</div><div class="cs">Tell us the vision — then tap the feelings it should create.</div></div>
   <div class="q"><span class="ql">Explain the concept or idea you have in mind for the logo <span class="req">*</span></span><textarea name="concept" data-req placeholder="Describe your vision in your own words — anything helps!"></textarea></div>
   <div class="q"><span class="ql">What message or feeling should the logo convey? <span class="opt">(pick all that apply)</span></span>
     <div class="chips" data-chips="feeling" data-multi>
@@ -182,23 +266,22 @@ input[type=color]{width:36px;height:32px;border-radius:8px;border:0.5px solid rg
   <div class="stepwarn">Please describe your concept above.</div>
   <div class="nav">
     <button type="button" class="bbk" onclick="go(1)">← Back</button>
-    <button type="button" class="bnx" onclick="go(3)">Next →</button>
+    <button type="button" class="bnx" onclick="go(3)">Continue →</button>
   </div>
 </div>
 
-<!-- ── STEP 3 : LOGO TYPE & STYLE ─────────────────── -->
+<!-- STEP 3 -->
 <div class="card" id="s3" style="display:none">
-  <div class="step-lbl">Step 3 of 7</div>
-  <div class="card-title">Logo type &amp; style</div>
-  <div class="q"><span class="ql">Logo type <span class="req">*</span> <span class="opt">(pick one — or let us decide)</span></span>
+  <div class="chead"><div class="ck">Step 3 · Look &amp; feel</div><div class="ct">Logo type &amp; style</div><div class="cs">Not sure? Pick "You decide" and we'll recommend the best fit.</div></div>
+  <div class="q"><span class="ql">Logo type <span class="req">*</span> <span class="opt">(pick one)</span></span>
     <div class="igrid" data-chips="logotype">
       <div class="ic-btn" data-v="Wordmark / Logotype"><span class="ico">Google</span><span class="lbl">Wordmark</span><span class="sub">Full name as text — like Google, Coca-Cola</span></div>
       <div class="ic-btn" data-v="Monogram / Lettermark"><span class="ico">HBO</span><span class="lbl">Monogram</span><span class="sub">Initials only — like HBO, IBM, CNN</span></div>
       <div class="ic-btn" data-v="Pictorial mark / Logo symbol"><span class="ico">🍎</span><span class="lbl">Pictorial mark</span><span class="sub">Recognizable icon — like Apple, Twitter</span></div>
       <div class="ic-btn" data-v="Abstract logo mark"><span class="ico">◢◣</span><span class="lbl">Abstract mark</span><span class="sub">Geometric form — like Nike, Pepsi</span></div>
       <div class="ic-btn" data-v="Mascot"><span class="ico">😀</span><span class="lbl">Mascot</span><span class="sub">Illustrated character — like KFC, Pringles</span></div>
-      <div class="ic-btn" data-v="Combination mark (icon + text)"><span class="ico">◆ Aa</span><span class="lbl">Combination</span><span class="sub">Icon + name together — like Adidas, Burger King</span></div>
-      <div class="ic-btn" data-v="Emblem"><span class="ico">🛡</span><span class="lbl">Emblem</span><span class="sub">Text inside a badge — like Starbucks, Harley</span></div>
+      <div class="ic-btn" data-v="Combination mark (icon + text)"><span class="ico">◆ Aa</span><span class="lbl">Combination</span><span class="sub">Icon + name — like Adidas, Burger King</span></div>
+      <div class="ic-btn" data-v="Emblem"><span class="ico">🛡</span><span class="lbl">Emblem</span><span class="sub">Text in a badge — like Starbucks, Harley</span></div>
       <div class="ic-btn" data-v="Not sure — designer's choice"><span class="ico">✦</span><span class="lbl">You decide</span><span class="sub">Let LogoOrbit recommend the best fit</span></div>
     </div>
     <input type="hidden" name="logotype" data-reqhidden>
@@ -237,15 +320,14 @@ input[type=color]{width:36px;height:32px;border-radius:8px;border:0.5px solid rg
   <div class="stepwarn">Please pick a logo type (or "You decide").</div>
   <div class="nav">
     <button type="button" class="bbk" onclick="go(2)">← Back</button>
-    <button type="button" class="bnx" onclick="go(4)">Next →</button>
+    <button type="button" class="bnx" onclick="go(4)">Continue →</button>
   </div>
 </div>
 
-<!-- ── STEP 4 : COLORS ────────────────────────────── -->
+<!-- STEP 4 -->
 <div class="card" id="s4" style="display:none">
-  <div class="step-lbl">Step 4 of 7</div>
-  <div class="card-title">Colors</div>
-  <div class="q"><span class="ql">Quick pick — ready-made palettes <span class="opt">(tap any you like)</span></span>
+  <div class="chead"><div class="ck">Step 4 · Colors</div><div class="ct">Your color world</div><div class="cs">Tap a ready-made palette, pick single colors, or add your exact brand color.</div></div>
+  <div class="q"><span class="ql">Quick pick — ready-made palettes</span>
     <div class="palgrid" id="palettes">
       <div class="pal" data-v="Midnight Luxe (navy · gold · white)"><div class="sw"><i style="background:#1a1a2e"></i><i style="background:#c9a96e"></i><i style="background:#f5f5f0"></i></div><span class="pn">Midnight Luxe</span></div>
       <div class="pal" data-v="Ocean Fresh (deep blue · teal · white)"><div class="sw"><i style="background:#023e8a"></i><i style="background:#00b4d8"></i><i style="background:#f8f9fa"></i></div><span class="pn">Ocean Fresh</span></div>
@@ -262,7 +344,7 @@ input[type=color]{width:36px;height:32px;border-radius:8px;border:0.5px solid rg
     <span class="ql">…or pick individual colors / add your exact brand color</span>
     <div class="cpresets" id="cpreset">
       <div class="cp" style="background:#111111" data-v="Black"></div>
-      <div class="cp" style="background:#f5f5f0;border:1px solid #bbb" data-v="White"></div>
+      <div class="cp" style="background:#f5f5f0" data-v="White"></div>
       <div class="cp" style="background:#b5b5b5" data-v="Silver"></div>
       <div class="cp" style="background:#c9a96e" data-v="Gold"></div>
       <div class="cp" style="background:#1a1a2e" data-v="Dark Navy"></div>
@@ -284,8 +366,8 @@ input[type=color]{width:36px;height:32px;border-radius:8px;border:0.5px solid rg
     </div>
     <div class="crow">
       <label>Custom color:</label>
-      <input type="color" id="cpk" value="#7c3aed">
-      <input type="text" class="chex" id="chx" placeholder="#7c3aed" maxlength="7">
+      <input type="color" id="cpk" value="#4f46e5">
+      <input type="text" class="chex" id="chx" placeholder="#4f46e5" maxlength="7">
       <button type="button" class="addbtn" onclick="addColor()">+ Add</button>
     </div>
     <div class="seltags" id="stags"></div>
@@ -295,14 +377,13 @@ input[type=color]{width:36px;height:32px;border-radius:8px;border:0.5px solid rg
   <div class="stepwarn"></div>
   <div class="nav">
     <button type="button" class="bbk" onclick="go(3)">← Back</button>
-    <button type="button" class="bnx" onclick="go(5)">Next →</button>
+    <button type="button" class="bnx" onclick="go(5)">Continue →</button>
   </div>
 </div>
 
-<!-- ── STEP 5 : USAGE & INSPIRATION ───────────────── -->
+<!-- STEP 5 -->
 <div class="card" id="s5" style="display:none">
-  <div class="step-lbl">Step 5 of 7</div>
-  <div class="card-title">Where it lives &amp; inspiration</div>
+  <div class="chead"><div class="ck">Step 5 · Usage</div><div class="ct">Where it lives &amp; inspiration</div><div class="cs">So we design a logo that works everywhere you need it.</div></div>
   <div class="q"><span class="ql">Where will the logo primarily be used? <span class="req">*</span> <span class="opt">(pick all)</span></span>
     <div class="chips" data-chips="usage" data-multi>
       <span class="chip" data-v="Website">Website</span>
@@ -322,18 +403,17 @@ input[type=color]{width:36px;height:32px;border-radius:8px;border:0.5px solid rg
   <div class="q"><span class="ql">Existing logos or brands you admire — or want to avoid resembling</span><input type="text" name="admire" placeholder="e.g. Love Nike's simplicity; don't look like Starbucks"></div>
   <div class="q"><span class="ql">Competitor logos you find appealing or dislike</span><input type="text" name="competitors" placeholder="e.g. CompetitorX's logo feels dated…"></div>
   <div class="q"><span class="ql">Any industry trends or design elements to consider?</span><input type="text" name="trends" placeholder="e.g. Gradient icons are popular in our space…"></div>
-  <div class="q"><span class="ql">Future plans the logo should accommodate <span class="opt">(e.g. new markets, product lines)</span></span><input type="text" name="future" placeholder="e.g. Expanding into Europe next year…"></div>
+  <div class="q"><span class="ql">Future plans the logo should accommodate <span class="opt">(new markets, product lines…)</span></span><input type="text" name="future" placeholder="e.g. Expanding into Europe next year…"></div>
   <div class="stepwarn">Please pick at least one place the logo will be used.</div>
   <div class="nav">
     <button type="button" class="bbk" onclick="go(4)">← Back</button>
-    <button type="button" class="bnx" onclick="go(6)">Next →</button>
+    <button type="button" class="bnx" onclick="go(6)">Continue →</button>
   </div>
 </div>
 
-<!-- ── STEP 6 : LEGAL & ADD-ONS ───────────────────── -->
+<!-- STEP 6 -->
 <div class="card" id="s6" style="display:none">
-  <div class="step-lbl">Step 6 of 7</div>
-  <div class="card-title">Website, trademark &amp; extras</div>
+  <div class="chead"><div class="ck">Step 6 · Extras</div><div class="ct">Website, trademark &amp; add-ons</div><div class="cs">Optional services that complete your brand.</div></div>
   <div class="q"><span class="ql">Do you have a website — or would you like one after your logo is finalized? <span class="req">*</span></span>
     <div class="chips" data-chips="website">
       <span class="chip" data-v="YES — I'd like a website">YES, I'd like one</span>
@@ -376,14 +456,13 @@ input[type=color]{width:36px;height:32px;border-radius:8px;border:0.5px solid rg
   <div class="stepwarn">Please answer the required questions above.</div>
   <div class="nav">
     <button type="button" class="bbk" onclick="go(5)">← Back</button>
-    <button type="button" class="bnx" onclick="go(7)">Next →</button>
+    <button type="button" class="bnx" onclick="go(7)">Continue →</button>
   </div>
 </div>
 
-<!-- ── STEP 7 : PROCESS & NOTES ───────────────────── -->
+<!-- STEP 7 -->
 <div class="card" id="s7" style="display:none">
-  <div class="step-lbl">Step 7 of 7</div>
-  <div class="card-title">Process &amp; final notes</div>
+  <div class="chead"><div class="ck">Step 7 · Process</div><div class="ct">Working together</div><div class="cs">How you'd like the project handled.</div></div>
   <div class="q"><span class="ql">How would you like feedback &amp; revisions handled?</span>
     <div class="chips" data-chips="feedback" data-multi>
       <span class="chip" data-v="Email">Email</span>
@@ -407,7 +486,18 @@ input[type=color]{width:36px;height:32px;border-radius:8px;border:0.5px solid rg
   <div class="stepwarn"></div>
   <div class="nav">
     <button type="button" class="bbk" onclick="go(6)">← Back</button>
-    <button type="submit" class="bnx" id="subbtn">Submit brief ✦</button>
+    <button type="button" class="bnx" onclick="go(8)">Review answers →</button>
+  </div>
+</div>
+
+<!-- STEP 8 : REVIEW -->
+<div class="card" id="s8" style="display:none">
+  <div class="chead"><div class="ck">Step 8 · Review</div><div class="ct">One last look</div><div class="cs">Check everything before sending. Tap "Edit" to jump back to any section.</div></div>
+  <div id="review"></div>
+  <div class="stepwarn"></div>
+  <div class="nav">
+    <button type="button" class="bbk" onclick="go(7)">← Back</button>
+    <button type="submit" class="bnx" id="subbtn">Submit my brief ✦</button>
   </div>
 </div>
 
@@ -415,20 +505,34 @@ input[type=color]{width:36px;height:32px;border-radius:8px;border:0.5px solid rg
 
 <!-- SUBMITTED -->
 <div class="ty" id="ty">
-  <div class="big">🚀</div>
-  <div class="badge">✓ SUBMITTED</div>
+  <span class="rocket">🚀</span>
+  <div class="badge">✓&nbsp; SUBMITTED</div>
   <h2>Your brief is in orbit!</h2>
   <p>Thanks for trusting <strong>LogoOrbit</strong> with your brand.<br>Our design team has received every detail and will<br>be in touch within 1–2 business days.</p>
-  <button type="button" class="pdfbtn" onclick="downloadPdf()">⬇ Download a PDF copy of your brief</button>
+  <button type="button" class="pdfbtn" onclick="downloadPdf()">⬇ &nbsp;Download a PDF copy of your brief</button>
 </div>
+
+<div class="foot">© LogoOrbit — Professional logo &amp; brand design</div>
 
 </div>
 <script>
-const TOTAL=7;
+/* ── theme ── */
+const html=document.documentElement;
+function setTheme(t){
+  html.dataset.theme=t;
+  try{localStorage.setItem('lo-theme',t)}catch(e){}
+  document.getElementById('t-light').classList.toggle('on',t==='light');
+  document.getElementById('t-dark').classList.toggle('on',t==='dark');
+}
+setTheme((()=>{try{return localStorage.getItem('lo-theme')}catch(e){return null}})()||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
+document.getElementById('tsw').addEventListener('click',()=>setTheme(html.dataset.theme==='light'?'dark':'light'));
+
+/* ── navigation ── */
+const TOTAL=8;
 let cur=1;
 const FORMSPREE='https://formspree.io/f/xlgpnoza';
+const STEP_OF_SECTION=[1,2,3,4,5,6,7];
 
-/* ── navigation with per-step validation ── */
 function validateStep(n){
   const card=document.getElementById('s'+n);
   let ok=true;
@@ -446,12 +550,20 @@ function go(n){
   document.getElementById('s'+cur).style.display='none';
   document.getElementById('s'+n).style.display='block';
   cur=n;
-  document.getElementById('pf').style.width=((n-1)/TOTAL*100)+'%';
-  document.getElementById('plbl').textContent='Step '+n+' of '+TOTAL;
+  const steps=document.querySelectorAll('.rstep');
+  steps.forEach((s,i)=>{
+    s.classList.toggle('done',i<n-1);
+    s.classList.toggle('cur',i===n-1);
+    if(i<n-1) s.querySelector('.dot').textContent='✓';
+    else s.querySelector('.dot').textContent=i+1;
+  });
+  const rail=document.getElementById('rail');
+  document.getElementById('railbar').style.width=((n-1)/(TOTAL-1)*(rail.offsetWidth-48))+'px';
+  if(n===8) buildReview();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* ── chips (single & multi) with "Other…" support ── */
+/* ── chips (single & multi) with "Other…" ── */
 document.querySelectorAll('[data-chips]').forEach(w=>{
   const name=w.dataset.chips, multi=w.hasAttribute('data-multi');
   const hidden=w.parentElement.querySelector('input[name="'+name+'"]');
@@ -461,7 +573,7 @@ document.querySelectorAll('[data-chips]').forEach(w=>{
     const vals=[...w.querySelectorAll('.on')].map(x=>x.dataset.other!==undefined?(otherInput?.value.trim()||'Other'):x.dataset.v);
     hidden.value=vals.join(', ');
   };
-  w.querySelectorAll('.chip,.ic-btn,.pal').forEach(c=>{
+  w.querySelectorAll('.chip,.ic-btn').forEach(c=>{
     c.addEventListener('click',()=>{
       if(!multi){ w.querySelectorAll('.on').forEach(x=>{if(x!==c)x.classList.remove('on');}); }
       c.classList.toggle('on');
@@ -475,7 +587,7 @@ document.querySelectorAll('[data-chips]').forEach(w=>{
   otherInput?.addEventListener('input',sync);
 });
 
-/* ── palettes (multi-select) ── */
+/* ── palettes ── */
 (()=>{
   const w=document.getElementById('palettes');
   const hidden=document.querySelector('input[name="palettes_sel"]');
@@ -487,7 +599,7 @@ document.querySelectorAll('[data-chips]').forEach(w=>{
   });
 })();
 
-/* ── individual colors ── */
+/* ── colors ── */
 let selCols=[];
 function cssToHex(css){
   const m=css.match(/\d+/g);
@@ -526,7 +638,7 @@ function rmCol(i){
   selCols.splice(i,1); renderCols();
 }
 
-/* ── PDF generation (jsPDF) ── */
+/* ── brief structure (shared by review, email, PDF) ── */
 const FIELDS=[
  ['CLIENT & BRAND',[
   ['Full Name','name'],['Email','email'],['Company / Organisation','company'],
@@ -551,45 +663,60 @@ const FIELDS=[
 ];
 let lastData=null;
 
+function formData(){
+  const fd=new FormData(document.getElementById('brief')); const data={};
+  fd.forEach((v,k)=>{ data[k]=(v||'').trim(); });
+  return data;
+}
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function buildReview(){
+  const data=formData();
+  const w=document.getElementById('review');
+  w.innerHTML=FIELDS.map(([sec,rows],i)=>`
+    <div class="rev-sec">
+      <div class="rev-h"><span>${sec}</span><button type="button" onclick="go(${STEP_OF_SECTION[i]})">Edit</button></div>
+      <div class="rev-b">${rows.map(([label,key])=>`<div class="rev-row"><b>${label}</b><span>${esc(data[key]||'—')}</span></div>`).join('')}</div>
+    </div>`).join('');
+}
+
+/* ── PDF ── */
 function buildPdf(data){
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF({unit:'mm',format:'a4'});
   const W=210, M=16; let y=0;
-  // header
-  doc.setFillColor(18,16,34); doc.rect(0,0,W,34,'F');
-  doc.setFillColor(124,58,237); doc.roundedRect(M,9,14,14,3,3,'F');
+  doc.setFillColor(17,17,32); doc.rect(0,0,W,34,'F');
+  doc.setFillColor(79,70,229); doc.roundedRect(M,9,14,14,3,3,'F');
   doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(9);
   doc.text('LO',M+7,17.5,{align:'center'});
   doc.setFontSize(17); doc.text('LogoOrbit',M+18,16);
-  doc.setFontSize(10); doc.setFont('helvetica','normal'); doc.setTextColor(190,180,230);
+  doc.setFontSize(10); doc.setFont('helvetica','normal'); doc.setTextColor(185,185,235);
   doc.text('Logo Design Brief',M+18,22.5);
-  doc.setFontSize(8.5); doc.setTextColor(150,150,170);
+  doc.setFontSize(8.5); doc.setTextColor(150,150,175);
   doc.text('Submitted: '+new Date().toLocaleString(),W-M,16,{align:'right'});
-  doc.text((data.company||'')+ '',W-M,21.5,{align:'right'});
+  doc.text((data.company||'')+'',W-M,21.5,{align:'right'});
   y=44;
   const pageBreak=(need)=>{ if(y+need>283){ doc.addPage(); y=18; } };
   FIELDS.forEach(([sec,rows])=>{
     pageBreak(16);
-    doc.setFillColor(124,58,237); doc.rect(M,y-4,2.2,6,'F');
-    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(70,45,140);
+    doc.setFillColor(79,70,229); doc.rect(M,y-4,2.2,6,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(60,50,160);
     doc.text(sec,M+5,y); y+=3;
-    doc.setDrawColor(210,205,230); doc.setLineWidth(.3); doc.line(M,y,W-M,y); y+=6;
+    doc.setDrawColor(208,208,232); doc.setLineWidth(.3); doc.line(M,y,W-M,y); y+=6;
     rows.forEach(([label,key])=>{
       const val=(data[key]||'').trim()||'—';
-      doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(120,120,140);
+      doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(120,120,145);
       const lines=doc.splitTextToSize(val,W-2*M-2);
       pageBreak(7+lines.length*4.6);
       doc.text(label.toUpperCase(),M,y); y+=4.6;
-      doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(35,35,45);
+      doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(32,32,45);
       doc.text(lines,M,y); y+=lines.length*4.6+3.5;
     });
-    // color swatches under COLORS section
     if(sec==='COLORS'&&selCols.length){
       pageBreak(12);
       let x=M;
       selCols.forEach(c=>{
         const r=parseInt(c.hex.slice(1,3),16),g=parseInt(c.hex.slice(3,5),16),b=parseInt(c.hex.slice(5,7),16);
-        doc.setFillColor(r,g,b); doc.setDrawColor(180,180,180);
+        doc.setFillColor(r,g,b); doc.setDrawColor(175,175,175);
         doc.circle(x+4,y,4,'FD'); x+=11;
         if(x>W-M-10){x=M;y+=11;}
       });
@@ -600,7 +727,7 @@ function buildPdf(data){
   const pages=doc.getNumberOfPages();
   for(let i=1;i<=pages;i++){
     doc.setPage(i);
-    doc.setFontSize(8); doc.setTextColor(160,160,175);
+    doc.setFontSize(8); doc.setTextColor(158,158,178);
     doc.text('LogoOrbit — Logo Design Brief  ·  Page '+i+' of '+pages,W/2,292,{align:'center'});
   }
   return doc;
@@ -610,7 +737,7 @@ function downloadPdf(){
   buildPdf(lastData).save('LogoOrbit-Brief-'+(lastData.company||lastData.name||'client').replace(/[^a-z0-9]+/gi,'-')+'.pdf');
 }
 
-/* ── auto-generate PDF from an emailed link (?d=…) ── */
+/* ── auto-PDF from emailed link (?d=…) ── */
 (function(){
   const p=new URLSearchParams(location.search).get('d');
   if(!p) return;
@@ -619,6 +746,7 @@ function downloadPdf(){
     selCols=data._cols||[];
     lastData=data;
     document.getElementById('brief').style.display='none';
+    document.getElementById('rail').style.display='none';
     document.querySelector('.hero h1').innerHTML='Client brief <em>PDF ready</em>';
     document.querySelector('.hero p').textContent='Generating PDF for '+(data.company||data.name)+'…';
     window.addEventListener('load',()=>setTimeout(downloadPdf,400));
@@ -628,22 +756,17 @@ function downloadPdf(){
 /* ── submit ── */
 document.getElementById('brief').addEventListener('submit',async function(e){
   e.preventDefault();
-  if(!validateStep(cur)) return;
   const btn=document.getElementById('subbtn');
   btn.disabled=true; btn.textContent='Sending…';
-  const fd=new FormData(this); const data={};
-  fd.forEach((v,k)=>{ data[k]=(v||'').trim(); });
+  const data=formData();
   data._cols=selCols;
   lastData=data;
 
-  // plain-text summary for the email body
   let summary='LOGO DESIGN BRIEF — LogoOrbit\n'+'='.repeat(40)+'\n';
   FIELDS.forEach(([sec,rows])=>{
     summary+='\n■ '+sec+'\n'+'-'.repeat(30)+'\n';
     rows.forEach(([label,key])=>{ summary+=label+': '+((data[key]||'').trim()||'—')+'\n'; });
   });
-
-  // one-click PDF link for the email
   const enc=btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g,'-').replace(/\//g,'_');
   const pdfLink=location.origin+location.pathname+'?d='+enc;
   summary+='\n'+'='.repeat(40)+'\nDOWNLOAD THIS BRIEF AS PDF (one click):\n'+pdfLink+'\n';
@@ -658,12 +781,11 @@ document.getElementById('brief').addEventListener('submit',async function(e){
       })});
     if(!res.ok) throw new Error('status '+res.status);
     document.getElementById('brief').style.display='none';
+    document.getElementById('rail').style.display='none';
     document.getElementById('ty').style.display='block';
-    document.getElementById('pf').style.width='100%';
-    document.getElementById('plbl').textContent='Done ✓';
     window.scrollTo({top:0,behavior:'smooth'});
   } catch(err){
-    btn.disabled=false; btn.textContent='Submit brief ✦';
+    btn.disabled=false; btn.textContent='Submit my brief ✦';
     alert('Something went wrong sending your brief. Please try again.\n'+err.message);
   }
 });
