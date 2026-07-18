@@ -524,7 +524,7 @@ function setTheme(t){
   document.getElementById('t-light').classList.toggle('on',t==='light');
   document.getElementById('t-dark').classList.toggle('on',t==='dark');
 }
-setTheme((()=>{try{return localStorage.getItem('lo-theme')}catch(e){return null}})()||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
+setTheme((()=>{try{return localStorage.getItem('lo-theme')}catch(e){return null}})()||'light');
 document.getElementById('tsw').addEventListener('click',()=>setTheme(html.dataset.theme==='light'?'dark':'light'));
 
 /* ── navigation ── */
