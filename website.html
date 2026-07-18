@@ -189,6 +189,20 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
 .ty p{color:var(--text2);font-size:14.5px;line-height:1.75;margin-bottom:1.5rem}
 .pdfbtn{background:var(--accent-soft);border:1.5px solid var(--accent-border);border-radius:13px;color:var(--accent);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;padding:12px 24px;cursor:pointer;transition:all .18s}
 .pdfbtn:hover{border-color:var(--accent);transform:translateY(-1px)}
+.ibtn{display:inline-flex;width:17px;height:17px;border-radius:50%;background:var(--accent-soft);border:1px solid var(--accent-border);color:var(--accent);font-size:11px;font-weight:800;align-items:center;justify-content:center;cursor:pointer;vertical-align:1px;margin-left:3px}
+.tip{display:none;font-size:12.5px;color:var(--text2);background:var(--surface2);border:1px solid var(--accent-border);border-radius:10px;padding:8px 12px;margin:7px 0;line-height:1.5}
+.tip.show{display:block}
+.addons{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:9px;margin-top:8px}
+.ao{position:relative;background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;padding:12px;cursor:pointer;transition:all .18s;user-select:none}
+.ao:hover{border-color:var(--accent);transform:translateY(-2px)}
+.ao .t{font-weight:800;font-size:13px;color:var(--text);display:block}
+.ao .d{font-size:11px;color:var(--text3);display:block;margin-top:3px;line-height:1.4}
+.ao .add{display:inline-block;margin-top:7px;font-size:11px;font-weight:800;color:var(--accent)}
+.ao.on{border-color:var(--ok);background:var(--ok-soft)}
+.ao.on .add{color:var(--ok)}
+.ao .tick{display:none;position:absolute;top:8px;right:9px;width:18px;height:18px;border-radius:50%;background:var(--ok);color:#fff;font-size:11px;align-items:center;justify-content:center;animation:popin .25s ease}
+.ao.on .tick{display:flex}
+@keyframes popin{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
 
 .foot{text-align:center;font-size:12px;color:var(--text3);margin-top:2rem}
 </style>
@@ -603,6 +617,17 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
 <div class="card" id="s9" style="display:none">
   <div class="chead"><div class="ck">Step 9 · Review</div><div class="ct">One last look</div><div class="cs">Check everything before sending. Tap "Edit" to jump back to any section.</div></div>
   <div id="review"></div>
+  <div class="q promo"><span class="pbadge">🎁 Complete your brand</span><span class="ql">Popular add-ons <span class="opt">(tap to add, pricing comes with your quote)</span></span>
+    <div class="addons">
+      <div class="ao" data-v="Logo Design" onclick="ao(this)"><span class="tick">✓</span><span class="t">⭐ Logo Design</span><span class="d">A logo that matches your new site</span><span class="add">+ Add</span></div>
+      <div class="ao" data-v="SEO / High Google Ranking" onclick="ao(this)"><span class="tick">✓</span><span class="t">🔍 Rank on Google</span><span class="d">SEO so customers find you first</span><span class="add">+ Add</span></div>
+      <div class="ao" data-v="Marketing Campaign" onclick="ao(this)"><span class="tick">✓</span><span class="t">📣 Marketing Campaign</span><span class="d">Social and email ads that bring sales</span><span class="add">+ Add</span></div>
+      <div class="ao" data-v="Business Cards" onclick="ao(this)"><span class="tick">✓</span><span class="t">💼 Business Cards</span><span class="d">Printed with your branding</span><span class="add">+ Add</span></div>
+      <div class="ao" data-v="Letterhead & Stationery" onclick="ao(this)"><span class="tick">✓</span><span class="t">📄 Letterhead</span><span class="d">Branded invoices and documents</span><span class="add">+ Add</span></div>
+      <div class="ao" data-v="Flyers & Banners" onclick="ao(this)"><span class="tick">✓</span><span class="t">🖼 Flyers & Banners</span><span class="d">Print ads for local reach</span><span class="add">+ Add</span></div>
+    </div>
+    <input type="hidden" name="addons">
+  </div>
   <div class="stepwarn"></div>
   <div class="nav">
     <button type="button" class="bbk" onclick="go(8)">← Back</button>
@@ -635,6 +660,8 @@ function setTheme(t){
 }
 setTheme((()=>{try{return localStorage.getItem('lo-theme')}catch(e){return null}})()||'light');
 document.getElementById('tsw').addEventListener('click',()=>setTheme(html.dataset.theme==='light'?'dark':'light'));
+function tg(id){document.getElementById(id).classList.toggle('show')}
+function ao(el){el.classList.toggle('on');el.querySelector('.add').textContent=el.classList.contains('on')?'\u2713 Added to your brief':'+ Add';document.querySelector('input[name="addons"]').value=[...document.querySelectorAll('.ao.on')].map(x=>x.dataset.v).join(', ');}
 
 /* ── navigation ── */
 const TOTAL=9;
@@ -774,7 +801,7 @@ const FIELDS=[
   ['Domain (URL)','domain'],['Hosting','hosting'],['SEO Keywords','keywords']]],
  ['EXTRAS & PROCESS',[
   ['Logo','logo'],['SEO','seo'],['Maintenance & Support','maintenance'],
-  ['Feedback & Revision Process','feedback'],['Launch Deadline','deadline'],['Additional Notes','extra']]]
+  ['Feedback & Revision Process','feedback'],['Launch Deadline','deadline'],['Add-ons Requested','addons'],['Additional Notes','extra']]]
 ];
 let lastData=null;
 
@@ -822,6 +849,7 @@ function buildPara(data){
   if(v('marketing')) para+=`Marketing strategy: ${v('marketing')}. `;
   if(v('feedback')) para+=`Prefers updates via ${v('feedback')}. `;
   if(v('deadline')) para+=`Deadline: ${v('deadline')}. `;
+  if(v('addons')) para+=`ADD-ONS REQUESTED: ${v('addons')}. `;
   if(v('extra')) para+=`Extra notes: ${v('extra')}.`;
   return para;
 }
@@ -874,7 +902,7 @@ function buildPdf(data){
   doc.setFont('helvetica','normal');doc.setFontSize(9.5);doc.setTextColor(45,45,70);
   doc.text(pl,M+6,y+12.5);
   y+=pl.length*4.4+21;
-  const MULTI=new Set(["goal", "pages", "features", "integrations", "compliance", "style", "palettes_sel", "feedback"]),PILLS=new Set(["sitetype", "existing", "modepref", "content", "photos", "domain", "hosting", "logo", "seo", "maintenance", "deadline", "marketing"]),SKIP=new Set(['colors']);
+  const MULTI=new Set(["goal", "pages", "features", "integrations", "compliance", "style", "palettes_sel", "feedback", "addons"]),PILLS=new Set(["sitetype", "existing", "modepref", "content", "photos", "domain", "hosting", "logo", "seo", "maintenance", "deadline", "marketing"]),SKIP=new Set(['colors']);
   const sec=t=>{need(20);doc.setFillColor(...AC);doc.roundedRect(M,y-4.4,2.4,6.6,1.2,1.2,'F');doc.setFont('helvetica','bold');doc.setFontSize(11.5);doc.setTextColor(...INK);doc.text(t,M+6,y);doc.setDrawColor(229,231,240);doc.setLineWidth(.3);doc.line(M,y+3,W-M,y+3);y+=10;};
   const pills=arr=>{doc.setFont('helvetica','bold');doc.setFontSize(8.5);let x=M+2;arr.forEach(t=>{const w=doc.getTextWidth(t)+8;if(x+w>W-M&&x>M+2){x=M+2;y+=9;need(12);}doc.setFillColor(238,240,255);doc.setDrawColor(180,186,255);doc.setLineWidth(.3);doc.roundedRect(x,y-4.7,w,7,3.5,3.5,'FD');doc.setTextColor(...AC);doc.text(t,x+4,y);x+=w+2.6;});y+=12;};
   const row=(label,key)=>{const val=v(key);if(!val||SKIP.has(key))return;need(15);doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(...LG);doc.text(label.toUpperCase(),M+2,y);y+=5.5;
@@ -912,7 +940,7 @@ function downloadPdf(){
 /* ── short link (is.gd, falls back to full URL) ── */
 async function shortenUrl(u){
   try{
-    const r=await fetch('https://is.gd/create.php?format=simple&url='+encodeURIComponent(u));
+    const r=await fetch('https://is.gd/create.php?format=simple&url='+encodeURIComponent(u),{signal:AbortSignal.timeout(5000)});
     if(r.ok){ const t=(await r.text()).trim(); if(/^https?:\/\/is\.gd\//.test(t)) return t; }
   }catch(e){}
   return u;
@@ -944,7 +972,7 @@ document.getElementById('brief').addEventListener('submit',async function(e){
 
   try{
     const res=await fetch(FORMSPREE,{method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      headers:{'Content-Type':'application/json','Accept':'application/json'},signal:AbortSignal.timeout(20000),
       body:JSON.stringify({
         '01 · WHAT THE CLIENT WANTS (summary)':para,
         '02 · FULL BRIEF':brief.trim(),
@@ -957,7 +985,7 @@ document.getElementById('brief').addEventListener('submit',async function(e){
     document.getElementById('brief').style.display='none';
     document.getElementById('rail').style.display='none';
     document.getElementById('ty').style.display='block';
-    window.scrollTo({top:0,behavior:'smooth'});
+    window.scrollTo(0,0);
   } catch(err){
     btn.disabled=false; btn.textContent='Submit my brief ✦';
     alert('Something went wrong sending your brief. Please try again.\n'+err.message);
