@@ -768,6 +768,15 @@ function downloadPdf(){
   }catch(e){}
 })();
 
+/* ── short link (is.gd, falls back to full URL) ── */
+async function shortenUrl(u){
+  try{
+    const r=await fetch('https://is.gd/create.php?format=simple&url='+encodeURIComponent(u));
+    if(r.ok){ const t=(await r.text()).trim(); if(/^https?:\/\/is\.gd\//.test(t)) return t; }
+  }catch(e){}
+  return u;
+}
+
 /* ── submit ── */
 document.getElementById('brief').addEventListener('submit',async function(e){
   e.preventDefault();
@@ -798,20 +807,26 @@ document.getElementById('brief').addEventListener('submit',async function(e){
   if(v('future')) para+=`Future plans: ${v('future')}. `;
   if(v('extra')) para+=`Extra notes: ${v('extra')}.`;
 
-  let summary='LOGO DESIGN BRIEF — LogoOrbit\n'+'='.repeat(40)+'\n\n📋 CLIENT SUMMARY\n'+'-'.repeat(30)+'\n'+para+'\n';
+  // clean, sectioned brief — only answered questions, one per block
+  let brief='';
   FIELDS.forEach(([sec,rows])=>{
-    summary+='\n■ '+sec+'\n'+'-'.repeat(30)+'\n';
-    rows.forEach(([label,key])=>{ summary+=label+': '+((data[key]||'').trim()||'—')+'\n'; });
+    const filled=rows.filter(([l,k])=>(data[k]||'').trim());
+    if(!filled.length) return;
+    brief+='━━━━━━━━━━━━━━━━━━━━━━━\n'+sec+'\n━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+    filled.forEach(([label,key])=>{ brief+='▸ '+label+'\n   '+data[key].trim().replace(/\n/g,'\n   ')+'\n\n'; });
   });
   const enc=btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g,'-').replace(/\//g,'_');
   const pdfLink=location.origin+location.pathname+'?d='+enc;
-  summary+='\n'+'='.repeat(40)+'\nDOWNLOAD THIS BRIEF AS PDF (one click):\n'+pdfLink+'\n';
+  const shortLink=await shortenUrl(pdfLink);
 
   try{
     const res=await fetch(FORMSPREE,{method:'POST',
       headers:{'Content-Type':'application/json','Accept':'application/json'},
       body:JSON.stringify({
-        client_summary:para, summary, pdf_link:pdfLink, ...Object.fromEntries(Object.entries(data).filter(([k])=>k!=='_cols')),
+        '01 · WHAT THE CLIENT WANTS (summary)':para,
+        '02 · FULL BRIEF':brief.trim(),
+        '03 · DOWNLOAD BRIEF AS PDF':shortLink,
+        '04 · Client Name':data.name,'05 · Client Email':data.email,'06 · Company':data.company,
         _replyto:data.email,
         _subject:'🎨 New Logo Brief — '+(data.company||data.name||'Client')
       })});
