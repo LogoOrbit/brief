@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LogoOrbit — Logo Design Brief</title>
+<title>LogoOrbit - Logo Design Brief</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -205,7 +205,7 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
 <div class="hero">
   <div class="eyebrow">LOGO DESIGN BRIEF</div>
   <h1>Let's design your<br><em>perfect logo</em></h1>
-  <p>Answer with quick taps — most questions have ready-made options. Takes about 4 minutes. Fields marked <span class="req">*</span> are required.</p>
+  <p>Answer with quick taps. Takes about 4 minutes. Fields marked <span class="req">*</span> are required.</p>
 </div>
 
 <div class="rail" id="rail">
@@ -255,9 +255,9 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
 
 <!-- STEP 2 -->
 <div class="card" id="s2" style="display:none">
-  <div class="chead"><div class="ck">Step 2 · The idea</div><div class="ct">Your concept &amp; message</div><div class="cs">Tell us the vision — then tap the feelings it should create.</div></div>
-  <div class="q"><span class="ql">Describe your logo idea <span class="req">*</span></span><textarea name="concept" data-req placeholder="Describe your vision in your own words — anything helps!"></textarea></div>
-  <div class="q"><span class="ql">What feeling should your logo give? <span class="opt">(tap all that apply)</span></span>
+  <div class="chead"><div class="ck">Step 2 · The idea</div><div class="ct">Your concept &amp; message</div><div class="cs">Tell us your idea and tap the feelings it should give.</div></div>
+  <div class="q"><span class="ql">Describe your logo idea <span class="req">*</span></span><textarea name="concept" data-req placeholder="Describe your idea in your own words"></textarea></div>
+  <div class="q"><span class="ql">What feeling should it give? <span class="opt">(tap all)</span></span>
     <div class="chips" data-chips="feeling" data-multi>
       <span class="chip" data-v="Trustworthy & Professional">Trustworthy</span>
       <span class="chip" data-v="Luxurious & Premium">Luxurious</span>
@@ -274,8 +274,8 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
   </div>
   <div class="q"><span class="ql">Any symbols or icons to include? <span class="opt">(optional)</span></span><input type="text" name="symbols" placeholder="e.g. A lion, a mountain, an arrow…"></div>
   <div class="q"><span class="ql">Anything to <b>avoid</b>? <span class="opt">(optional)</span></span><input type="text" name="avoid_concepts" placeholder="e.g. No animals, nothing cartoonish…"></div>
-  <div class="q"><span class="ql">Words or phrases associated with your brand <span class="opt">(optional)</span></span><input type="text" name="brand_words" placeholder="e.g. Precision, handcrafted, family-owned since 1998…"></div>
-  <div class="q"><span class="ql">Logos or brands you admire — or don't want to resemble <span class="opt">(optional, incl. competitors)</span></span><input type="text" name="ref_brands" placeholder="e.g. Love Nike's simplicity; don't look like Acme Corp…"></div>
+  <div class="q"><span class="ql">Words linked to your brand? <span class="opt">(optional)</span></span><input type="text" name="brand_words" placeholder="e.g. Precision, handcrafted, family-owned since 1998…"></div>
+  <div class="q"><span class="ql">Brands you like or want to avoid? <span class="opt">(optional)</span></span><input type="text" name="ref_brands" placeholder="e.g. Like Nike, nothing like Acme Corp"></div>
   <div class="stepwarn">Please describe your concept above.</div>
   <div class="nav">
     <button type="button" class="bbk" onclick="go(1)">← Back</button>
@@ -288,18 +288,18 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
   <div class="chead"><div class="ck">Step 3 · Look &amp; feel</div><div class="ct">Logo type &amp; style</div><div class="cs">Not sure? Pick "You decide" and we'll recommend the best fit.</div></div>
   <div class="q"><span class="ql">Pick a logo type <span class="req">*</span></span>
     <div class="igrid" data-chips="logotype">
-      <div class="ic-btn" data-v="Wordmark / Logotype"><span class="ico"><svg viewBox="0 0 76 32"><text x="38" y="22" text-anchor="middle" font-size="16" font-weight="700" font-family="Arial,sans-serif"><tspan fill="#4285F4">G</tspan><tspan fill="#EA4335">o</tspan><tspan fill="#FBBC05">o</tspan><tspan fill="#4285F4">g</tspan><tspan fill="#34A853">l</tspan><tspan fill="#EA4335">e</tspan></text></svg></span><span class="lbl">Wordmark</span><span class="sub">Full name as text — like Google, Coca-Cola</span></div>
-      <div class="ic-btn" data-v="Monogram / Lettermark"><span class="ico"><svg viewBox="0 0 76 32" fill="currentColor"><text x="38" y="23" text-anchor="middle" font-size="19" font-weight="800" font-family="Arial Black,Arial,sans-serif" letter-spacing="1">HB<tspan dx="-1">O</tspan></text><circle cx="63.5" cy="16.6" r="3.1" fill="var(--surface,#fff)"/><circle cx="63.5" cy="16.6" r="1.5" fill="currentColor"/></svg></span><span class="lbl">Monogram</span><span class="sub">Initials only — like HBO, IBM, CNN</span></div>
-      <div class="ic-btn" data-v="Pictorial mark / Logo symbol"><span class="ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg></span><span class="lbl">Pictorial mark</span><span class="sub">Recognizable icon — like Apple, Twitter</span></div>
-      <div class="ic-btn" data-v="Abstract logo mark"><span class="ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 7.8L6.442 15.276c-1.456.616-2.679.925-3.668.925-1.12 0-1.933-.392-2.437-1.177-.317-.504-.41-1.143-.28-1.918.13-.775.476-1.6 1.036-2.478.467-.71 1.232-1.643 2.297-2.8a6.122 6.122 0 00-.784 1.848c-.28 1.195-.028 2.072.756 2.632.373.261.886.392 1.54.392.522 0 1.11-.084 1.764-.252L24 7.8z"/></svg></span><span class="lbl">Abstract mark</span><span class="sub">Geometric form — like Nike, Pepsi</span></div>
-      <div class="ic-btn" data-v="Mascot"><span class="ico"><svg viewBox="0 0 32 32" fill="#3DDC84"><path d="M21.9 6.9l1.7-3a.35.35 0 00-.6-.35l-1.75 3.05A11.5 11.5 0 0016 5.9c-1.9 0-3.7.44-5.25.71L9 3.55a.35.35 0 00-.6.35l1.7 3A10.6 10.6 0 004.5 16h23a10.6 10.6 0 00-5.6-9.1z"/><circle cx="11" cy="12" r="1.2" fill="#fff"/><circle cx="21" cy="12" r="1.2" fill="#fff"/></svg></span><span class="lbl">Mascot</span><span class="sub">Illustrated character — like Android, KFC</span></div>
-      <div class="ic-btn" data-v="Combination mark (icon + text)"><span class="ico"><svg viewBox="0 0 76 32" fill="currentColor"><path d="M8 24l7-12 2.6 4.5L13.2 24z"/><path d="M15.5 24l6-10.4 2.6 4.5L20.7 24z"/><path d="M23 24l5-8.7 2.6 4.5L28.2 24z"/><text x="53" y="23" text-anchor="middle" font-size="12" font-weight="800" font-family="Arial,sans-serif">adidas</text></svg></span><span class="lbl">Combination</span><span class="sub">Icon + name — like Adidas, Burger King</span></div>
-      <div class="ic-btn" data-v="Emblem"><span class="ico"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="14.5" fill="#1a1a1a"/><text x="16" y="8.6" text-anchor="middle" font-size="4.6" font-weight="700" fill="#fff" font-family="Arial,sans-serif">BMW</text><circle cx="16" cy="18" r="8.6" fill="#fff"/><path d="M16 9.4A8.6 8.6 0 0124.6 18H16z" fill="#0166B1"/><path d="M16 26.6A8.6 8.6 0 017.4 18H16z" fill="#0166B1"/><path d="M16 9.4A8.6 8.6 0 007.4 18H16z" fill="#fff" stroke="#ccc" stroke-width=".3"/><path d="M16 26.6A8.6 8.6 0 0024.6 18H16z" fill="#fff" stroke="#ccc" stroke-width=".3"/></svg></span><span class="lbl">Emblem</span><span class="sub">Badge / roundel — like BMW, Starbucks</span></div>
-      <div class="ic-btn" data-v="Not sure — designer's choice"><span class="ico"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 2l3.2 10.8L30 16l-10.8 3.2L16 30l-3.2-10.8L2 16l10.8-3.2z"/><circle cx="26" cy="6" r="2.2" opacity=".6"/></svg></span><span class="lbl">You decide</span><span class="sub">Let LogoOrbit recommend the best fit</span></div>
+      <div class="ic-btn" data-v="Wordmark / Logotype"><span class="ico"><svg viewBox="0 0 76 32"><text x="38" y="22" text-anchor="middle" font-size="16" font-weight="700" font-family="Arial,sans-serif"><tspan fill="#4285F4">G</tspan><tspan fill="#EA4335">o</tspan><tspan fill="#FBBC05">o</tspan><tspan fill="#4285F4">g</tspan><tspan fill="#34A853">l</tspan><tspan fill="#EA4335">e</tspan></text></svg></span><span class="lbl">Wordmark</span><span class="sub">Full name as text, like Google, Coca-Cola</span></div>
+      <div class="ic-btn" data-v="Monogram / Lettermark"><span class="ico"><svg viewBox="0 0 76 32" fill="currentColor"><text x="38" y="23" text-anchor="middle" font-size="19" font-weight="800" font-family="Arial Black,Arial,sans-serif" letter-spacing="1">HB<tspan dx="-1">O</tspan></text><circle cx="63.5" cy="16.6" r="3.1" fill="var(--surface,#fff)"/><circle cx="63.5" cy="16.6" r="1.5" fill="currentColor"/></svg></span><span class="lbl">Monogram</span><span class="sub">Initials only, like HBO, IBM, CNN</span></div>
+      <div class="ic-btn" data-v="Pictorial mark / Logo symbol"><span class="ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg></span><span class="lbl">Pictorial mark</span><span class="sub">Recognizable icon, like Apple, Twitter</span></div>
+      <div class="ic-btn" data-v="Abstract logo mark"><span class="ico"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 7.8L6.442 15.276c-1.456.616-2.679.925-3.668.925-1.12 0-1.933-.392-2.437-1.177-.317-.504-.41-1.143-.28-1.918.13-.775.476-1.6 1.036-2.478.467-.71 1.232-1.643 2.297-2.8a6.122 6.122 0 00-.784 1.848c-.28 1.195-.028 2.072.756 2.632.373.261.886.392 1.54.392.522 0 1.11-.084 1.764-.252L24 7.8z"/></svg></span><span class="lbl">Abstract mark</span><span class="sub">Geometric form, like Nike, Pepsi</span></div>
+      <div class="ic-btn" data-v="Mascot"><span class="ico"><svg viewBox="0 0 32 32" fill="#3DDC84"><path d="M21.9 6.9l1.7-3a.35.35 0 00-.6-.35l-1.75 3.05A11.5 11.5 0 0016 5.9c-1.9 0-3.7.44-5.25.71L9 3.55a.35.35 0 00-.6.35l1.7 3A10.6 10.6 0 004.5 16h23a10.6 10.6 0 00-5.6-9.1z"/><circle cx="11" cy="12" r="1.2" fill="#fff"/><circle cx="21" cy="12" r="1.2" fill="#fff"/></svg></span><span class="lbl">Mascot</span><span class="sub">Illustrated character, like Android, KFC</span></div>
+      <div class="ic-btn" data-v="Combination mark (icon + text)"><span class="ico"><svg viewBox="0 0 76 32" fill="currentColor"><path d="M8 24l7-12 2.6 4.5L13.2 24z"/><path d="M15.5 24l6-10.4 2.6 4.5L20.7 24z"/><path d="M23 24l5-8.7 2.6 4.5L28.2 24z"/><text x="53" y="23" text-anchor="middle" font-size="12" font-weight="800" font-family="Arial,sans-serif">adidas</text></svg></span><span class="lbl">Combination</span><span class="sub">Icon + name, like Adidas, Burger King</span></div>
+      <div class="ic-btn" data-v="Emblem"><span class="ico"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="14.5" fill="#1a1a1a"/><text x="16" y="8.6" text-anchor="middle" font-size="4.6" font-weight="700" fill="#fff" font-family="Arial,sans-serif">BMW</text><circle cx="16" cy="18" r="8.6" fill="#fff"/><path d="M16 9.4A8.6 8.6 0 0124.6 18H16z" fill="#0166B1"/><path d="M16 26.6A8.6 8.6 0 017.4 18H16z" fill="#0166B1"/><path d="M16 9.4A8.6 8.6 0 007.4 18H16z" fill="#fff" stroke="#ccc" stroke-width=".3"/><path d="M16 26.6A8.6 8.6 0 0024.6 18H16z" fill="#fff" stroke="#ccc" stroke-width=".3"/></svg></span><span class="lbl">Emblem</span><span class="sub">Badge / roundel, like BMW, Starbucks</span></div>
+      <div class="ic-btn" data-v="Not sure, designer's choice"><span class="ico"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 2l3.2 10.8L30 16l-10.8 3.2L16 30l-3.2-10.8L2 16l10.8-3.2z"/><circle cx="26" cy="6" r="2.2" opacity=".6"/></svg></span><span class="lbl">You decide</span><span class="sub">Let LogoOrbit recommend the best fit</span></div>
     </div>
     <input type="hidden" name="logotype" data-reqhidden>
   </div>
-  <div class="q"><span class="ql">Pick your style <span class="opt">(tap all that fit)</span></span>
+  <div class="q"><span class="ql">Pick your style <span class="opt">(tap all)</span></span>
     <div class="chips" data-chips="style" data-multi>
       <span class="chip" data-v="Modern & Sleek">Modern</span>
       <span class="chip" data-v="Classic & Timeless">Classic</span>
@@ -330,7 +330,7 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
     </div>
     <input type="hidden" name="fontpref">
   </div>
-  <div class="q"><span class="ql">Industry trends or design elements to consider? <span class="opt">(optional)</span></span><input type="text" name="trends" placeholder="e.g. Gradient meshes, retro badges, negative space…"></div>
+  <div class="q"><span class="ql">Any design trends to follow? <span class="opt">(optional)</span></span><input type="text" name="trends" placeholder="e.g. Gradient meshes, retro badges, negative space…"></div>
   <div class="stepwarn">Please pick a logo type (or "You decide").</div>
   <div class="nav">
     <button type="button" class="bbk" onclick="go(2)">← Back</button>
@@ -398,7 +398,7 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
 <!-- STEP 5 -->
 <div class="card" id="s5" style="display:none">
   <div class="chead"><div class="ck">Step 5 · Usage</div><div class="ct">Where will it be used?</div><div class="cs">So we design a logo that works everywhere you need it.</div></div>
-  <div class="q"><span class="ql">Where will your logo be used? <span class="req">*</span> <span class="opt">(tap all)</span></span>
+  <div class="q"><span class="ql">Where will it be used? <span class="req">*</span> <span class="opt">(tap all)</span></span>
     <div class="chips" data-chips="usage" data-multi>
       <span class="chip" data-v="Website"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3z"/></svg>Website</span>
       <span class="chip" data-v="Business Cards"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="6" width="19" height="12.5" rx="2"/><path d="M6 10.5h6M6 14h4"/><circle cx="17" cy="12.2" r="1.8"/></svg>Business Cards</span>
@@ -426,7 +426,7 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
   <div class="chead"><div class="ck">Step 6 · Extras</div><div class="ct">Website, trademark &amp; add-ons</div><div class="cs">Optional services that complete your brand.</div></div>
   <div class="q promo"><span class="pbadge">⭐ Most popular</span><span class="ql">Want a website with your new logo? <span class="req">*</span></span>
     <div class="chips" data-chips="website">
-      <span class="chip yes" data-v="YES — I'd like a website">✓ YES, I'd like one</span>
+      <span class="chip yes" data-v="YES, I'd like a website">✓ YES, I'd like one</span>
       <span class="chip" data-v="NO">NO</span>
       <span class="chip" data-v="Depends on price/cost">Depends on Price</span>
       <span class="chip" data-v="I already have a website">Already have one</span>
@@ -434,7 +434,7 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
     <div class="pnote">A logo + website launch together makes your brand look established from day one.</div>
     <input type="hidden" name="website" data-reqhidden>
   </div>
-  <div class="q promo gold"><span class="pbadge">🛡 Protect your brand</span><span class="ql">Want an official USPTO trademark for your logo? <span class="req">*</span> <span class="opt">(United States Patent &amp; Trademark Office)</span></span>
+  <div class="q promo gold"><span class="pbadge">🛡 Protect your brand</span><span class="ql">Want a USPTO trademark for your logo? <span class="req">*</span></span>
     <div class="chips" data-chips="trademark">
       <span class="chip yes" data-v="YES">✓ YES</span>
       <span class="chip" data-v="NO">NO</span>
@@ -452,12 +452,12 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
     <div class="otherbox"><input type="text" data-otherinput placeholder="Describe your requirements…"></div>
     <input type="hidden" name="copyright" data-reqhidden>
   </div>
-  <div class="q"><span class="ql">Want business cards designed &amp; printed?</span>
+  <div class="q"><span class="ql">Want business cards printed?</span>
     <div class="chips" data-chips="bizcards">
-      <span class="chip" data-v="100 Cards - $99">100 — $99</span>
-      <span class="chip" data-v="250 Cards - $175">250 — $175</span>
-      <span class="chip" data-v="500 Cards - $285">500 — $285</span>
-      <span class="chip" data-v="1,000 Cards - $350">1,000 — $350</span>
+      <span class="chip" data-v="100 Cards - $99">100 - $99</span>
+      <span class="chip" data-v="250 Cards - $175">250 - $175</span>
+      <span class="chip" data-v="500 Cards - $285">500 - $285</span>
+      <span class="chip" data-v="1,000 Cards - $350">1,000 - $350</span>
       <span class="chip" data-v="Maybe">Maybe</span>
       <span class="chip" data-v="No thanks">No thanks</span>
       <span class="chip" data-other>Other…</span>
@@ -475,7 +475,7 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
 <!-- STEP 7 -->
 <div class="card" id="s7" style="display:none">
   <div class="chead"><div class="ck">Step 7 · Process</div><div class="ct">Working together</div><div class="cs">How you'd like the project handled.</div></div>
-  <div class="q"><span class="ql">How should we send you updates &amp; revisions?</span>
+  <div class="q"><span class="ql">How should we send updates?</span>
     <div class="chips" data-chips="feedback" data-multi>
       <span class="chip" data-v="Email">Email</span>
       <span class="chip" data-v="WhatsApp / Text">WhatsApp / Text</span>
@@ -494,7 +494,7 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
     </div>
     <input type="hidden" name="deadline">
   </div>
-  <div class="q"><span class="ql">Future plans the logo should accommodate? <span class="opt">(optional — e.g. new markets, product lines)</span></span><input type="text" name="future" placeholder="e.g. Expanding into skincare next year, opening US branches…"></div>
+  <div class="q"><span class="ql">Any future plans to keep in mind? <span class="opt">(optional)</span></span><input type="text" name="future" placeholder="e.g. Expanding into skincare next year, opening US branches…"></div>
   <div class="q"><span class="ql">Anything else? <span class="opt">(optional)</span></span><textarea name="extra" placeholder="Ideas, references, must-haves, links to images you like…"></textarea></div>
   <div class="stepwarn"></div>
   <div class="nav">
@@ -525,7 +525,7 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
   <button type="button" class="pdfbtn" onclick="downloadPdf()">⬇ &nbsp;Download a PDF copy of your brief</button>
 </div>
 
-<div class="foot">© LogoOrbit — Professional logo &amp; brand design</div>
+<div class="foot">© LogoOrbit - Professional logo &amp; brand design</div>
 
 </div>
 <script>
@@ -690,7 +690,7 @@ function buildReview(){
   w.innerHTML=FIELDS.map(([sec,rows],i)=>`
     <div class="rev-sec">
       <div class="rev-h"><span>${sec}</span><button type="button" onclick="go(${STEP_OF_SECTION[i]})">Edit</button></div>
-      <div class="rev-b">${rows.map(([label,key])=>`<div class="rev-row"><b>${label}</b><span>${esc(data[key]||'—')}</span></div>`).join('')}</div>
+      <div class="rev-b">${rows.map(([label,key])=>`<div class="rev-row"><b>${label}</b><span>${esc(data[key]||'-')}</span></div>`).join('')}</div>
     </div>`).join('');
 }
 
@@ -718,7 +718,7 @@ function buildPdf(data){
     doc.text(sec,M+5,y); y+=3;
     doc.setDrawColor(208,208,232); doc.setLineWidth(.3); doc.line(M,y,W-M,y); y+=6;
     rows.forEach(([label,key])=>{
-      const val=(data[key]||'').trim()||'—';
+      const val=(data[key]||'').trim()||'-';
       doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(120,120,145);
       const lines=doc.splitTextToSize(val,W-2*M-2);
       pageBreak(7+lines.length*4.6);
@@ -743,7 +743,7 @@ function buildPdf(data){
   for(let i=1;i<=pages;i++){
     doc.setPage(i);
     doc.setFontSize(8); doc.setTextColor(158,158,178);
-    doc.text('LogoOrbit — Logo Design Brief  ·  Page '+i+' of '+pages,W/2,292,{align:'center'});
+    doc.text('LogoOrbit - Logo Design Brief  ·  Page '+i+' of '+pages,W/2,292,{align:'center'});
   }
   return doc;
 }
@@ -801,13 +801,13 @@ document.getElementById('brief').addEventListener('submit',async function(e){
   if(colorBits) para+=`Colors: ${colorBits}. `;
   if(v('avoid_colors')) para+=`No ${v('avoid_colors')}. `;
   if(v('usage')) para+=`The logo will be used on: ${v('usage')}. `;
-  para+=`Website: ${v('website')||'—'}. USPTO trademark: ${v('trademark')||'—'}. Copyright: ${v('copyright')||'—'}. Business cards: ${v('bizcards')||'—'}. `;
+  para+=`Website: ${v('website')||'-'}. USPTO trademark: ${v('trademark')||'-'}. Copyright: ${v('copyright')||'-'}. Business cards: ${v('bizcards')||'-'}. `;
   if(v('feedback')) para+=`Prefers updates via ${v('feedback')}. `;
   if(v('deadline')) para+=`Deadline: ${v('deadline')}. `;
   if(v('future')) para+=`Future plans: ${v('future')}. `;
   if(v('extra')) para+=`Extra notes: ${v('extra')}.`;
 
-  // clean, sectioned brief — only answered questions, one per block
+  // clean, sectioned brief: only answered questions, one per block
   let brief='';
   FIELDS.forEach(([sec,rows])=>{
     const filled=rows.filter(([l,k])=>(data[k]||'').trim());
@@ -828,7 +828,7 @@ document.getElementById('brief').addEventListener('submit',async function(e){
         '03 · DOWNLOAD BRIEF AS PDF':shortLink,
         '04 · Client Name':data.name,'05 · Client Email':data.email,'06 · Company':data.company,
         _replyto:data.email,
-        _subject:'🎨 New Logo Brief — '+(data.company||data.name||'Client')
+        _subject:'🎨 New Logo Brief - '+(data.company||data.name||'Client')
       })});
     if(!res.ok) throw new Error('status '+res.status);
     document.getElementById('brief').style.display='none';
