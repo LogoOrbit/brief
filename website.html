@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LogoOrbit — Website Design Brief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>window.jspdf||document.write('<script src="jspdf.umd.min.js"><\/script>')</script>
+<style>
+/* ─────────── THEME TOKENS ─────────── */
+:root{
+  --bg:#f5f6fa; --bg-grad:radial-gradient(1200px 500px at 50% -10%,#e8eaff 0%,transparent 60%);
+  --surface:#ffffff; --surface2:#f8f9fc; --border:#e5e7f0; --border-strong:#d4d7e5;
+  --text:#0f172a; --text2:#5b6478; --text3:#9aa1b5;
+  --accent:#4f46e5; --accent2:#7c3aed; --accent-soft:#eef0ff; --accent-border:#c7cbff;
+  --ok:#059669; --ok-soft:#ecfdf5; --err:#e11d48;
+  --shadow:0 1px 2px rgba(15,23,42,.04),0 8px 24px rgba(15,23,42,.06);
+  --shadow-lg:0 4px 12px rgba(15,23,42,.06),0 24px 60px rgba(79,70,229,.10);
+  --ring:0 0 0 3px rgba(79,70,229,.15);
+}
+[data-theme=dark]{
+  --bg:#0a0d16; --bg-grad:radial-gradient(1200px 500px at 50% -10%,rgba(79,70,229,.16) 0%,transparent 60%);
+  --surface:#121826; --surface2:#0e1420; --border:#232b3d; --border-strong:#323c54;
+  --text:#f1f3fa; --text2:#98a2ba; --text3:#5c6580;
+  --accent:#818cf8; --accent2:#a78bfa; --accent-soft:rgba(99,102,241,.14); --accent-border:rgba(129,140,248,.45);
+  --ok:#34d399; --ok-soft:rgba(52,211,153,.12); --err:#fb7185;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  --shadow-lg:0 4px 12px rgba(0,0,0,.4),0 24px 60px rgba(99,102,241,.15);
+  --ring:0 0 0 3px rgba(129,140,248,.22);
+}
+/* ─────────── BASE ─────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);background-image:var(--bg-grad);background-repeat:no-repeat;min-height:100vh;color:var(--text);transition:background .3s,color .3s;padding-bottom:5rem}
+.wrap{max-width:720px;margin:0 auto;padding:0 1.1rem}
+
+/* ─────────── TOP BAR ─────────── */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 0;margin-bottom:1.6rem}
+.brand{display:flex;align-items:center;gap:11px;text-decoration:none}
+.orbit-logo{width:40px;height:40px;position:relative;flex-shrink:0}
+.orbit-logo .core{position:absolute;inset:9px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.orbit-logo .ring{position:absolute;inset:0;border:2px solid var(--accent-border);border-radius:50%;transform:rotate(-24deg) scaleY(.48)}
+.orbit-logo .moon{position:absolute;top:1px;left:26px;width:7px;height:7px;border-radius:50%;background:var(--accent2)}
+.brand-name{font-family:'Sora',sans-serif;font-size:1.25rem;font-weight:800;letter-spacing:-.5px;color:var(--text)}
+.brand-name em{font-style:normal;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tbtns{display:flex;gap:8px;align-items:center}
+.pagelink{display:flex;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:9px 15px;font-size:12.5px;font-weight:700;color:var(--text2);text-decoration:none;box-shadow:var(--shadow);transition:all .18s;white-space:nowrap}
+.pagelink:hover{border-color:var(--accent-border);color:var(--accent)}
+.tswitch{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:5px;cursor:pointer;box-shadow:var(--shadow)}
+.tswitch span{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;color:var(--text3)}
+.tswitch span.on{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff}
+
+/* ─────────── HERO ─────────── */
+.hero{text-align:center;margin-bottom:2rem}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;background:var(--accent-soft);border:1px solid var(--accent-border);color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.4px;border-radius:100px;padding:6px 14px;margin-bottom:1rem}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.hero h1{font-family:'Sora',sans-serif;font-size:clamp(1.7rem,4.5vw,2.4rem);font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:.6rem}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{color:var(--text2);font-size:14.5px;max-width:440px;margin:0 auto;line-height:1.6}
+
+/* ─────────── STEP RAIL ─────────── */
+.rail{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.6rem;position:relative;padding:0 4px}
+.rail::before{content:'';position:absolute;top:15px;left:24px;right:24px;height:2px;background:var(--border)}
+.rail .bar{position:absolute;top:15px;left:24px;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .4s ease;width:0}
+.rstep{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;width:48px;cursor:default}
+.rstep .dot{width:32px;height:32px;border-radius:50%;background:var(--surface);border:2px solid var(--border-strong);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;color:var(--text3);transition:all .25s}
+.rstep .rl{font-size:10px;font-weight:600;color:var(--text3);text-align:center;letter-spacing:.2px;transition:color .25s}
+.rstep.cur .dot{border-color:var(--accent);color:var(--accent);box-shadow:var(--ring)}
+.rstep.cur .rl{color:var(--accent)}
+.rstep.done .dot{background:linear-gradient(135deg,var(--accent),var(--accent2));border-color:transparent;color:#fff}
+.rstep.done .rl{color:var(--text2)}
+@media(max-width:560px){.rstep .rl{display:none}.rail::before,.rail .bar{top:15px}}
+
+/* ─────────── CARD ─────────── */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:2rem;box-shadow:var(--shadow-lg);animation:rise .35s ease}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.chead{margin-bottom:1.6rem}
+.ck{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:.35rem}
+.ct{font-family:'Sora',sans-serif;font-size:1.35rem;font-weight:700;letter-spacing:-.4px}
+.cs{font-size:13.5px;color:var(--text2);margin-top:.3rem;line-height:1.5}
+
+.q{margin-bottom:1.45rem}
+.q:last-of-type{margin-bottom:0}
+.ql{display:block;font-size:15.5px;font-weight:700;color:var(--text);margin-bottom:.6rem;line-height:1.45;letter-spacing:-.1px}
+.req{color:var(--err)}
+.opt{font-weight:500;color:var(--text3);font-size:12.5px}
+.chip svg{width:15px;height:15px;vertical-align:-2.5px;margin-right:6px}
+.chip.yes{border-color:var(--ok);color:var(--ok);background:var(--ok-soft)}
+.chip.yes.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.promo{border:1.5px solid var(--accent-border);background:linear-gradient(135deg,var(--accent-soft),transparent 70%);border-radius:16px;padding:15px 15px 16px;margin-bottom:1.45rem}
+.promo.gold{border-color:#f0c36a;background:linear-gradient(135deg,rgba(245,185,66,.14),transparent 70%)}
+.pbadge{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;border-radius:100px;padding:4px 11px;margin-bottom:8px;background:var(--accent);color:#fff}
+.promo.gold .pbadge{background:#d97706}
+.pnote{font-size:12.5px;color:var(--text2);margin-top:8px;line-height:1.5}
+
+input[type=text],input[type=email],input[type=url],textarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:14.5px;padding:12px 15px;outline:none;transition:border-color .2s,box-shadow .2s}
+input:focus,textarea:focus{border-color:var(--accent);box-shadow:var(--ring);background:var(--surface)}
+input::placeholder,textarea::placeholder{color:var(--text3)}
+textarea{resize:vertical;min-height:88px;line-height:1.6}
+input.err,textarea.err{border-color:var(--err)}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--surface2);border:1.5px solid var(--border);border-radius:100px;color:var(--text2);font-size:13.5px;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;padding:9px 16px;cursor:pointer;transition:all .18s;user-select:none}
+.chip:hover{border-color:var(--accent-border);color:var(--accent)}
+.chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+.otherbox{margin-top:9px;display:none}
+.otherbox.show{display:block}
+
+/* icon cards */
+.igrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:9px}
+.ic-btn{background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;padding:15px 10px;cursor:pointer;transition:all .18s;user-select:none;text-align:center;position:relative}
+.ic-btn:hover{border-color:var(--accent-border);transform:translateY(-1px)}
+.ic-btn.on{background:var(--accent-soft);border-color:var(--accent);box-shadow:var(--ring)}
+.ic-btn.on::after{content:'✓';position:absolute;top:7px;right:9px;width:17px;height:17px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center}
+.ic-btn .ico{font-size:19px;font-weight:800;margin-bottom:6px;display:flex;align-items:center;justify-content:center;height:34px;color:var(--accent);font-family:'Sora',sans-serif}
+.ic-btn .ico svg{height:32px;max-width:76px}
+.ic-btn .lbl{font-size:13px;color:var(--text);font-weight:700;display:block}
+.ic-btn .sub{font-size:10.5px;color:var(--text3);display:block;margin-top:3px;line-height:1.35}
+
+/* palettes */
+.palgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:9px;margin-bottom:14px}
+.pal{background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;padding:11px;cursor:pointer;transition:all .18s;user-select:none;position:relative}
+.pal:hover{border-color:var(--accent-border);transform:translateY(-1px)}
+.pal.on{border-color:var(--accent);box-shadow:var(--ring)}
+.pal.on::after{content:'✓';position:absolute;top:7px;right:9px;width:17px;height:17px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:10px;display:flex;align-items:center;justify-content:center}
+.pal .sw{display:flex;gap:4px;margin-bottom:7px}
+.pal .sw i{flex:1;height:24px;border-radius:6px}
+.pal .pn{font-size:12px;color:var(--text2);font-weight:700;text-align:center;display:block}
+.pal.on .pn{color:var(--accent)}
+
+/* colors */
+.cpresets{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:12px}
+.cp{width:34px;height:34px;border-radius:50%;cursor:pointer;border:2px solid var(--border-strong);transition:transform .15s,box-shadow .15s;position:relative;flex-shrink:0}
+.cp:hover{transform:scale(1.14)}
+.cp.on{box-shadow:0 0 0 2px var(--surface),0 0 0 4.5px var(--accent);transform:scale(1.08)}
+.cp.on::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;text-shadow:0 1px 3px rgba(0,0,0,.85)}
+.crow{display:flex;align-items:center;gap:9px;margin-bottom:9px;flex-wrap:wrap}
+.crow label{font-size:12.5px;font-weight:600;color:var(--text2);white-space:nowrap}
+input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface2);cursor:pointer;padding:3px}
+.chex{flex:1;max-width:120px}
+.addbtn{background:var(--accent-soft);border:1.5px solid var(--accent-border);border-radius:10px;color:var(--accent);font-size:12.5px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;padding:8px 14px;cursor:pointer;white-space:nowrap;transition:all .18s}
+.addbtn:hover{border-color:var(--accent)}
+.seltags{display:flex;flex-wrap:wrap;gap:7px;min-height:6px}
+.stag{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1.5px solid var(--border);border-radius:100px;padding:5px 11px 5px 7px;font-size:12.5px;font-weight:600;color:var(--text2)}
+.swatch{width:15px;height:15px;border-radius:50%;flex-shrink:0;border:1px solid var(--border-strong)}
+.rm{cursor:pointer;color:var(--text3);margin-left:3px;font-size:15px;line-height:1}
+.rm:hover{color:var(--err)}
+
+/* nav */
+.nav{display:flex;gap:10px;margin-top:1.7rem}
+.bbk{flex:1;background:var(--surface2);border:1.5px solid var(--border);border-radius:13px;color:var(--text2);font-family:'Plus Jakarta Sans',sans-serif;font-size:14.5px;font-weight:600;padding:13px;cursor:pointer;transition:all .18s}
+.bbk:hover{border-color:var(--border-strong);color:var(--text)}
+.bnx{flex:2;background:linear-gradient(135deg,#4f46e5,#7c3aed);border:none;border-radius:13px;color:#fff;font-family:'Plus Jakarta Sans',sans-serif;font-size:14.5px;font-weight:700;padding:13px;cursor:pointer;transition:all .18s;box-shadow:0 6px 18px rgba(79,70,229,.35)}
+.bnx:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(79,70,229,.4)}
+.bnx:active{transform:translateY(0)}
+.bnx:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.bsolo{flex:1}
+.stepwarn{display:none;color:var(--err);font-size:13px;font-weight:600;text-align:center;margin-top:12px}
+.stepwarn.show{display:block}
+
+/* review */
+.rev-sec{border:1.5px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.rev-h{display:flex;align-items:center;justify-content:space-between;background:var(--surface2);padding:11px 15px;font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--accent)}
+.rev-h button{background:none;border:none;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif;font-size:11.5px;font-weight:600;cursor:pointer;text-decoration:underline}
+.rev-h button:hover{color:var(--accent)}
+.rev-b{padding:6px 15px 12px}
+.rev-row{display:flex;gap:12px;padding:7px 0;border-bottom:1px dashed var(--border);font-size:13px}
+.rev-row:last-child{border-bottom:none}
+.rev-row b{flex:0 0 42%;color:var(--text3);font-weight:600}
+.rev-row span{flex:1;color:var(--text);font-weight:500;word-break:break-word}
+
+/* submitted */
+.ty{display:none;text-align:center;padding:3.2rem 1.8rem;background:var(--surface);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow-lg);animation:rise .4s ease}
+.ty .rocket{font-size:52px;margin-bottom:1.1rem;display:block;animation:float 2.6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.ty .badge{display:inline-flex;align-items:center;gap:7px;background:var(--ok-soft);border:1.5px solid var(--ok);color:var(--ok);font-size:12.5px;font-weight:800;letter-spacing:2.5px;border-radius:100px;padding:8px 22px;margin-bottom:1.3rem}
+.ty h2{font-family:'Sora',sans-serif;font-size:1.6rem;font-weight:800;letter-spacing:-.5px;margin-bottom:.55rem}
+.ty p{color:var(--text2);font-size:14.5px;line-height:1.75;margin-bottom:1.5rem}
+.pdfbtn{background:var(--accent-soft);border:1.5px solid var(--accent-border);border-radius:13px;color:var(--accent);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;padding:12px 24px;cursor:pointer;transition:all .18s}
+.pdfbtn:hover{border-color:var(--accent);transform:translateY(-1px)}
+
+.foot{text-align:center;font-size:12px;color:var(--text3);margin-top:2rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="topbar">
+  <a class="brand" href="#">
+    <div class="orbit-logo"><div class="ring"></div><div class="core"></div><div class="moon"></div></div>
+    <span class="brand-name">Logo<em>Orbit</em></span>
+  </a>
+  <div class="tbtns">
+    <a class="pagelink" href="index.html">Logo brief ↗</a>
+    <div class="tswitch" id="tsw" title="Toggle theme">
+      <span id="t-light" class="on">☀️</span>
+      <span id="t-dark">🌙</span>
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="eyebrow">WEBSITE DESIGN BRIEF</div>
+  <h1>Let's build your<br><em>perfect website</em></h1>
+  <p>Answer with quick taps — most questions have ready-made options. Takes about 4 minutes. Fields marked <span class="req">*</span> are required.</p>
+</div>
+
+<div class="rail" id="rail">
+  <div class="bar" id="railbar"></div>
+  <div class="rstep cur"><div class="dot">1</div><div class="rl">You</div></div>
+  <div class="rstep"><div class="dot">2</div><div class="rl">Website</div></div>
+  <div class="rstep"><div class="dot">3</div><div class="rl">Pages</div></div>
+  <div class="rstep"><div class="dot">4</div><div class="rl">Style</div></div>
+  <div class="rstep"><div class="dot">5</div><div class="rl">Colors</div></div>
+  <div class="rstep"><div class="dot">6</div><div class="rl">Content</div></div>
+  <div class="rstep"><div class="dot">7</div><div class="rl">Process</div></div>
+  <div class="rstep"><div class="dot">8</div><div class="rl">Review</div></div>
+</div>
+
+<form id="brief">
+
+<!-- STEP 1 -->
+<div class="card" id="s1">
+  <div class="chead"><div class="ck">Step 1 · About you</div><div class="ct">You &amp; your business</div><div class="cs">The basics so we know who we're building for.</div></div>
+  <div class="q"><span class="ql">Your full name <span class="req">*</span></span><input type="text" name="name" data-req placeholder="Jane Smith"></div>
+  <div class="q"><span class="ql">Your email <span class="req">*</span></span><input type="email" name="email" data-req placeholder="jane@company.com"></div>
+  <div class="q"><span class="ql">Company / Organisation name <span class="req">*</span></span><input type="text" name="company" data-req placeholder="e.g. Acme Studios LLC"></div>
+  <div class="q"><span class="ql">Tagline / slogan <span class="opt">(optional)</span></span><input type="text" name="tagline" placeholder="e.g. Design that orbits excellence"></div>
+  <div class="q"><span class="ql">Industry / niche <span class="req">*</span></span>
+    <div class="chips" data-chips="industry">
+      <span class="chip" data-v="Fashion & Beauty">Fashion & Beauty</span>
+      <span class="chip" data-v="Food & Beverage">Food & Drink</span>
+      <span class="chip" data-v="Tech & Software">Tech</span>
+      <span class="chip" data-v="Health & Fitness">Health & Fitness</span>
+      <span class="chip" data-v="Real Estate & Construction">Real Estate</span>
+      <span class="chip" data-v="Education">Education</span>
+      <span class="chip" data-v="Finance & Legal">Finance / Legal</span>
+      <span class="chip" data-v="Automotive & Transport">Automotive</span>
+      <span class="chip" data-v="Creative & Media">Creative / Media</span>
+      <span class="chip" data-v="Retail & E-commerce">Retail</span>
+      <span class="chip" data-v="Travel & Hospitality">Travel</span>
+      <span class="chip" data-v="Non-profit">Non-profit</span>
+      <span class="chip" data-other>Other…</span>
+    </div>
+    <div class="otherbox"><input type="text" data-otherinput placeholder="Type your industry…"></div>
+    <input type="hidden" name="industry" data-reqhidden>
+  </div>
+  <div class="stepwarn">Please fill the required fields above.</div>
+  <div class="nav"><button type="button" class="bnx bsolo" onclick="go(2)">Continue →</button></div>
+</div>
+
+<!-- STEP 2 -->
+<div class="card" id="s2" style="display:none">
+  <div class="chead"><div class="ck">Step 2 · The website</div><div class="ct">What are we building?</div><div class="cs">Not sure? Pick "You decide" and we'll recommend the best fit.</div></div>
+  <div class="q"><span class="ql">What kind of website do you need? <span class="req">*</span></span>
+    <div class="igrid" data-chips="sitetype">
+      <div class="ic-btn" data-v="Business / Company website"><span class="ico"><svg viewBox="0 0 76 32" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="10" y="3" width="56" height="26" rx="3"/><path d="M10 9h56"/><circle cx="14.5" cy="6" r="1" fill="currentColor" stroke="none"/><circle cx="18.5" cy="6" r="1" fill="currentColor" stroke="none"/><path d="M15 14h24M15 18h18" stroke-width="2"/><rect x="47" y="13" width="14" height="6.5" rx="1.5" fill="currentColor" stroke="none" opacity=".8"/><path d="M15 24h12M31 24h12M47 24h12"/></svg></span><span class="lbl">Business Site</span><span class="sub">Present your company &amp; services professionally</span></div>
+      <div class="ic-btn" data-v="Online store / E-commerce"><span class="ico"><svg viewBox="0 0 76 32" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="14" y="4" width="14" height="11" rx="2"/><rect x="31" y="4" width="14" height="11" rx="2"/><rect x="48" y="4" width="14" height="11" rx="2"/><path d="M24 22h28l-2.5 7h-22z"/><circle cx="30" cy="29" r=".8" fill="currentColor"/><circle cx="47" cy="29" r=".8" fill="currentColor"/><path d="M24 22l-2-4h-4"/></svg></span><span class="lbl">Online Store</span><span class="sub">Sell products online with cart &amp; checkout</span></div>
+      <div class="ic-btn" data-v="Portfolio / Showcase"><span class="ico"><svg viewBox="0 0 76 32" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="14" y="4" width="22" height="14" rx="2"/><circle cx="20" cy="9" r="2"/><path d="M14 15l6-4 5 3 6-5 5 4"/><rect x="40" y="4" width="22" height="14" rx="2"/><path d="M40 14l7-6 6 5 5-3 4 3"/><rect x="14" y="21" width="22" height="8" rx="2"/><rect x="40" y="21" width="22" height="8" rx="2"/></svg></span><span class="lbl">Portfolio</span><span class="sub">Showcase your work, art or photography</span></div>
+      <div class="ic-btn" data-v="Landing page (single page)"><span class="ico"><svg viewBox="0 0 76 32" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="18" y="3" width="40" height="26" rx="3"/><path d="M25 10h26M28 14.5h20" stroke-width="2"/><rect x="30" y="19.5" width="16" height="5.5" rx="2.5" fill="currentColor" stroke="none" opacity=".85"/></svg></span><span class="lbl">Landing Page</span><span class="sub">One focused page that converts visitors</span></div>
+      <div class="ic-btn" data-v="Blog / Magazine"><span class="ico"><svg viewBox="0 0 76 32" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="16" y="3" width="44" height="26" rx="3"/><path d="M22 10h20M22 14h32M22 18h32M22 22h24" stroke-width="1.8"/><rect x="46" y="8" width="8" height="5" rx="1" fill="currentColor" stroke="none" opacity=".7"/></svg></span><span class="lbl">Blog / Magazine</span><span class="sub">Publish articles, news or stories</span></div>
+      <div class="ic-btn" data-v="Booking / Appointments"><span class="ico"><svg viewBox="0 0 76 32" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="22" y="5" width="32" height="24" rx="3"/><path d="M22 12h32M30 5V2.5M46 5V2.5" stroke-width="1.8"/><path d="M29 19l4 4 8-8" stroke-width="2.2"/></svg></span><span class="lbl">Booking Site</span><span class="sub">Let clients book appointments online</span></div>
+      <div class="ic-btn" data-v="Redesign of my existing website"><span class="ico"><svg viewBox="0 0 76 32" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="20" y="6" width="36" height="20" rx="3"/><path d="M30 16a8 8 0 0114-4M46 16a8 8 0 01-14 4" stroke-width="2"/><path d="M44 8v4h-4M32 24v-4h4" stroke-width="2"/></svg></span><span class="lbl">Redesign</span><span class="sub">Refresh &amp; modernize my current site</span></div>
+      <div class="ic-btn" data-v="Not sure — designer's choice"><span class="ico"><svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 2l3.2 10.8L30 16l-10.8 3.2L16 30l-3.2-10.8L2 16l10.8-3.2z"/><circle cx="26" cy="6" r="2.2" opacity=".6"/></svg></span><span class="lbl">You decide</span><span class="sub">Let LogoOrbit recommend the best fit</span></div>
+    </div>
+    <input type="hidden" name="sitetype" data-reqhidden>
+  </div>
+  <div class="q"><span class="ql">Do you already have a website? <span class="req">*</span></span>
+    <div class="chips" data-chips="existing">
+      <span class="chip" data-v="No — this is a brand new website">No — brand new</span>
+      <span class="chip" data-v="Yes — it needs a full redesign">Yes — needs redesign</span>
+      <span class="chip" data-v="Yes — keep it, just improve it">Yes — just improve it</span>
+    </div>
+    <input type="hidden" name="existing" data-reqhidden>
+  </div>
+  <div class="q"><span class="ql">Current website address <span class="opt">(if you have one)</span></span><input type="text" name="existing_url" placeholder="e.g. www.mycompany.com"></div>
+  <div class="q"><span class="ql">What's the #1 goal of the website? <span class="opt">(tap all that apply)</span></span>
+    <div class="chips" data-chips="goal" data-multi>
+      <span class="chip" data-v="Get more leads / inquiries">Get leads &amp; inquiries</span>
+      <span class="chip" data-v="Sell products online">Sell online</span>
+      <span class="chip" data-v="Showcase my work">Showcase my work</span>
+      <span class="chip" data-v="Take bookings / appointments">Take bookings</span>
+      <span class="chip" data-v="Look credible & professional">Look credible</span>
+      <span class="chip" data-v="Share information / educate">Share information</span>
+      <span class="chip" data-v="Build a community / audience">Build an audience</span>
+      <span class="chip" data-other>Other…</span>
+    </div>
+    <div class="otherbox"><input type="text" data-otherinput placeholder="What should the site achieve?"></div>
+    <input type="hidden" name="goal">
+  </div>
+  <div class="q"><span class="ql">Who are your visitors? <span class="opt">(optional)</span></span><input type="text" name="audience" placeholder="e.g. Local homeowners aged 30–55, small business owners…"></div>
+  <div class="stepwarn">Please pick a website type and tell us if you have a site already.</div>
+  <div class="nav">
+    <button type="button" class="bbk" onclick="go(1)">← Back</button>
+    <button type="button" class="bnx" onclick="go(3)">Continue →</button>
+  </div>
+</div>
+
+<!-- STEP 3 -->
+<div class="card" id="s3" style="display:none">
+  <div class="chead"><div class="ck">Step 3 · Pages &amp; features</div><div class="ct">What goes inside</div><div class="cs">Tap the pages and features you need — we'll suggest anything you miss.</div></div>
+  <div class="q"><span class="ql">Which pages do you need? <span class="req">*</span> <span class="opt">(tap all)</span></span>
+    <div class="chips" data-chips="pages" data-multi>
+      <span class="chip" data-v="Home">Home</span>
+      <span class="chip" data-v="About Us">About</span>
+      <span class="chip" data-v="Services">Services</span>
+      <span class="chip" data-v="Products / Shop">Products / Shop</span>
+      <span class="chip" data-v="Portfolio / Gallery">Portfolio / Gallery</span>
+      <span class="chip" data-v="Blog / News">Blog / News</span>
+      <span class="chip" data-v="Testimonials / Reviews">Testimonials</span>
+      <span class="chip" data-v="FAQ">FAQ</span>
+      <span class="chip" data-v="Pricing">Pricing</span>
+      <span class="chip" data-v="Contact">Contact</span>
+      <span class="chip" data-v="Not sure — recommend pages for me">Not sure — you recommend</span>
+      <span class="chip" data-other>Other…</span>
+    </div>
+    <div class="otherbox"><input type="text" data-otherinput placeholder="What other pages?"></div>
+    <input type="hidden" name="pages" data-reqhidden>
+  </div>
+  <div class="q"><span class="ql">Which features should it have? <span class="opt">(tap all that apply)</span></span>
+    <div class="chips" data-chips="features" data-multi>
+      <span class="chip" data-v="Contact form">Contact form</span>
+      <span class="chip" data-v="Online payments / checkout">Online payments</span>
+      <span class="chip" data-v="Booking / scheduling">Booking / scheduling</span>
+      <span class="chip" data-v="Live chat / WhatsApp button">Live chat / WhatsApp</span>
+      <span class="chip" data-v="Photo / video gallery">Photo gallery</span>
+      <span class="chip" data-v="Newsletter signup">Newsletter signup</span>
+      <span class="chip" data-v="Blog / articles">Blog</span>
+      <span class="chip" data-v="Customer reviews">Customer reviews</span>
+      <span class="chip" data-v="Google Maps / directions">Google Maps</span>
+      <span class="chip" data-v="Social media feeds">Social media feeds</span>
+      <span class="chip" data-v="Member login area">Member login</span>
+      <span class="chip" data-v="Multiple languages">Multiple languages</span>
+      <span class="chip" data-other>Other…</span>
+    </div>
+    <div class="otherbox"><input type="text" data-otherinput placeholder="What other features?"></div>
+    <input type="hidden" name="features">
+  </div>
+  <div class="stepwarn">Please pick at least one page (or "Not sure").</div>
+  <div class="nav">
+    <button type="button" class="bbk" onclick="go(2)">← Back</button>
+    <button type="button" class="bnx" onclick="go(4)">Continue →</button>
+  </div>
+</div>
+
+<!-- STEP 4 -->
+<div class="card" id="s4" style="display:none">
+  <div class="chead"><div class="ck">Step 4 · Look &amp; feel</div><div class="ct">Design style</div><div class="cs">Tap the styles that fit your brand — and show us sites you admire.</div></div>
+  <div class="q"><span class="ql">Pick your style <span class="opt">(tap all that fit)</span></span>
+    <div class="chips" data-chips="style" data-multi>
+      <span class="chip" data-v="Modern & Sleek">Modern</span>
+      <span class="chip" data-v="Minimalist & Clean">Minimalist</span>
+      <span class="chip" data-v="Bold & Strong">Bold</span>
+      <span class="chip" data-v="Elegant & Luxury">Elegant / Luxury</span>
+      <span class="chip" data-v="Corporate & Professional">Corporate</span>
+      <span class="chip" data-v="Playful & Fun">Playful</span>
+      <span class="chip" data-v="Warm & Friendly">Warm / Friendly</span>
+      <span class="chip" data-v="Creative & Artistic">Creative / Artistic</span>
+      <span class="chip" data-v="Tech & Futuristic">Futuristic</span>
+      <span class="chip" data-v="Vintage & Retro">Vintage</span>
+    </div>
+    <input type="hidden" name="style">
+  </div>
+  <div class="q"><span class="ql">Light or dark design?</span>
+    <div class="chips" data-chips="modepref">
+      <span class="chip" data-v="Light & airy">☀️ Light &amp; airy</span>
+      <span class="chip" data-v="Dark & dramatic">🌙 Dark &amp; dramatic</span>
+      <span class="chip" data-v="Both (light/dark toggle)">Both — with a toggle</span>
+      <span class="chip" data-v="Designer's choice">You decide</span>
+    </div>
+    <input type="hidden" name="modepref">
+  </div>
+  <div class="q"><span class="ql">Websites you like <span class="opt">(optional — paste 1–3 links, competitors or any site)</span></span><textarea name="references" placeholder="e.g. www.apple.com — love how clean it is&#10;www.competitor.com — like their menu"></textarea></div>
+  <div class="q"><span class="ql">Anything to <b>avoid</b>? <span class="opt">(optional)</span></span><input type="text" name="avoid_design" placeholder="e.g. No stock photos of handshakes, nothing cluttered…"></div>
+  <div class="stepwarn"></div>
+  <div class="nav">
+    <button type="button" class="bbk" onclick="go(3)">← Back</button>
+    <button type="button" class="bnx" onclick="go(5)">Continue →</button>
+  </div>
+</div>
+
+<!-- STEP 5 -->
+<div class="card" id="s5" style="display:none">
+  <div class="chead"><div class="ck">Step 5 · Colors</div><div class="ct">Your color world</div><div class="cs">Tap a ready-made palette, pick single colors, or add your exact brand color.</div></div>
+  <div class="q"><span class="ql">Tap a color palette you like</span>
+    <div class="palgrid" id="palettes">
+      <div class="pal" data-v="Midnight Luxe (navy · gold · white)"><div class="sw"><i style="background:#1a1a2e"></i><i style="background:#c9a96e"></i><i style="background:#f5f5f0"></i></div><span class="pn">Midnight Luxe</span></div>
+      <div class="pal" data-v="Ocean Fresh (deep blue · teal · white)"><div class="sw"><i style="background:#023e8a"></i><i style="background:#00b4d8"></i><i style="background:#f8f9fa"></i></div><span class="pn">Ocean Fresh</span></div>
+      <div class="pal" data-v="Earth & Sage (forest · sage · cream)"><div class="sw"><i style="background:#2d6a4f"></i><i style="background:#95d5b2"></i><i style="background:#fefae0"></i></div><span class="pn">Earth & Sage</span></div>
+      <div class="pal" data-v="Sunset Bold (red · orange · yellow)"><div class="sw"><i style="background:#e63946"></i><i style="background:#f4a261"></i><i style="background:#f9c74f"></i></div><span class="pn">Sunset Bold</span></div>
+      <div class="pal" data-v="Royal Purple (purple · violet · silver)"><div class="sw"><i style="background:#4B0082"></i><i style="background:#7c3aed"></i><i style="background:#c0c0c0"></i></div><span class="pn">Royal Purple</span></div>
+      <div class="pal" data-v="Monochrome (black · grey · white)"><div class="sw"><i style="background:#111"></i><i style="background:#888"></i><i style="background:#f5f5f5"></i></div><span class="pn">Monochrome</span></div>
+      <div class="pal" data-v="Blush & Rose (pink · rose · cream)"><div class="sw"><i style="background:#ff6b9d"></i><i style="background:#f4acb7"></i><i style="background:#fff0f3"></i></div><span class="pn">Blush & Rose</span></div>
+      <div class="pal" data-v="Fire & Charcoal (orange · charcoal · white)"><div class="sw"><i style="background:#FF4500"></i><i style="background:#2b2d42"></i><i style="background:#edf2f4"></i></div><span class="pn">Fire &amp; Charcoal</span></div>
+    </div>
+    <input type="hidden" name="palettes_sel">
+  </div>
+  <div class="q">
+    <span class="ql">…or pick single colors / add your exact brand color</span>
+    <div class="cpresets" id="cpreset">
+      <div class="cp" style="background:#111111" data-v="Black"></div>
+      <div class="cp" style="background:#f5f5f0" data-v="White"></div>
+      <div class="cp" style="background:#b5b5b5" data-v="Silver"></div>
+      <div class="cp" style="background:#c9a96e" data-v="Gold"></div>
+      <div class="cp" style="background:#1a1a2e" data-v="Dark Navy"></div>
+      <div class="cp" style="background:#457b9d" data-v="Steel Blue"></div>
+      <div class="cp" style="background:#00CED1" data-v="Turquoise"></div>
+      <div class="cp" style="background:#2d6a4f" data-v="Forest Green"></div>
+      <div class="cp" style="background:#228B22" data-v="Green"></div>
+      <div class="cp" style="background:#f9c74f" data-v="Yellow"></div>
+      <div class="cp" style="background:#f4a261" data-v="Warm Orange"></div>
+      <div class="cp" style="background:#FF4500" data-v="Deep Orange"></div>
+      <div class="cp" style="background:#e63946" data-v="Red"></div>
+      <div class="cp" style="background:#DC143C" data-v="Crimson"></div>
+      <div class="cp" style="background:#ff6b9d" data-v="Pink"></div>
+      <div class="cp" style="background:#6d3fc8" data-v="Purple"></div>
+      <div class="cp" style="background:#4B0082" data-v="Indigo"></div>
+      <div class="cp" style="background:#8B4513" data-v="Brown"></div>
+      <div class="cp" style="background:#264653" data-v="Dark Teal"></div>
+      <div class="cp" style="background:#a8dadc" data-v="Soft Teal"></div>
+    </div>
+    <div class="crow">
+      <label>Custom color:</label>
+      <input type="color" id="cpk" value="#4f46e5">
+      <input type="text" class="chex" id="chx" placeholder="#4f46e5" maxlength="7">
+      <button type="button" class="addbtn" onclick="addColor()">+ Add</button>
+    </div>
+    <div class="seltags" id="stags"></div>
+    <input type="hidden" name="colors">
+  </div>
+  <div class="q"><span class="ql">Colors to avoid? <span class="opt">(optional)</span></span><input type="text" name="avoid_colors" placeholder="e.g. No pink, avoid neon…"></div>
+  <div class="stepwarn"></div>
+  <div class="nav">
+    <button type="button" class="bbk" onclick="go(4)">← Back</button>
+    <button type="button" class="bnx" onclick="go(6)">Continue →</button>
+  </div>
+</div>
+
+<!-- STEP 6 -->
+<div class="card" id="s6" style="display:none">
+  <div class="chead"><div class="ck">Step 6 · Content &amp; extras</div><div class="ct">Content, logo &amp; add-ons</div><div class="cs">What you have ready — and services that complete your launch.</div></div>
+  <div class="q"><span class="ql">Is your text content ready? <span class="req">*</span></span>
+    <div class="chips" data-chips="content">
+      <span class="chip" data-v="All text is ready">✓ All ready</span>
+      <span class="chip" data-v="Some of it is ready">Some of it</span>
+      <span class="chip" data-v="I need help writing it">Need help writing</span>
+    </div>
+    <input type="hidden" name="content" data-reqhidden>
+  </div>
+  <div class="q"><span class="ql">Do you have photos &amp; images?</span>
+    <div class="chips" data-chips="photos">
+      <span class="chip" data-v="I have my own photos">Have my own</span>
+      <span class="chip" data-v="Need stock photos">Need stock photos</span>
+      <span class="chip" data-v="A mix of both">A mix of both</span>
+    </div>
+    <input type="hidden" name="photos">
+  </div>
+  <div class="q"><span class="ql">Domain &amp; hosting? <span class="opt">(the web address &amp; where the site lives)</span></span>
+    <div class="chips" data-chips="domain">
+      <span class="chip" data-v="I have both domain & hosting">Have both</span>
+      <span class="chip" data-v="I have a domain only">Domain only</span>
+      <span class="chip" data-v="I need both">Need both</span>
+      <span class="chip" data-v="Not sure — please advise">Not sure</span>
+    </div>
+    <input type="hidden" name="domain">
+  </div>
+  <div class="q promo"><span class="pbadge">⭐ Most popular</span><span class="ql">Do you have a logo for your brand? <span class="req">*</span></span>
+    <div class="chips" data-chips="logo">
+      <span class="chip" data-v="Yes — I'll provide it">✓ Yes, I'll provide it</span>
+      <span class="chip yes" data-v="NO — I'd like one designed">✓ NO — design one for me</span>
+      <span class="chip" data-v="I have one but it needs a refresh">Needs a refresh</span>
+    </div>
+    <div class="pnote">A logo + website launch together makes your brand look established from day one.</div>
+    <input type="hidden" name="logo" data-reqhidden>
+  </div>
+  <div class="q promo gold"><span class="pbadge">🔍 Get found on Google</span><span class="ql">Want SEO so customers find you on Google? <span class="req">*</span> <span class="opt">(Search Engine Optimization)</span></span>
+    <div class="chips" data-chips="seo">
+      <span class="chip yes" data-v="YES">✓ YES</span>
+      <span class="chip" data-v="NO">NO</span>
+      <span class="chip" data-v="Tell me more first">Tell me more first</span>
+    </div>
+    <div class="pnote">SEO helps your website rank higher on Google so new customers find you without ads.</div>
+    <input type="hidden" name="seo" data-reqhidden>
+  </div>
+  <div class="q"><span class="ql">Want ongoing maintenance after launch? <span class="opt">(updates, backups, small edits)</span></span>
+    <div class="chips" data-chips="maintenance">
+      <span class="chip" data-v="YES — keep my site maintained">YES</span>
+      <span class="chip" data-v="NO — I'll manage it myself">NO — I'll manage it</span>
+      <span class="chip" data-v="Maybe — tell me the options">Maybe — tell me options</span>
+    </div>
+    <input type="hidden" name="maintenance">
+  </div>
+  <div class="stepwarn">Please answer the required questions above.</div>
+  <div class="nav">
+    <button type="button" class="bbk" onclick="go(5)">← Back</button>
+    <button type="button" class="bnx" onclick="go(7)">Continue →</button>
+  </div>
+</div>
+
+<!-- STEP 7 -->
+<div class="card" id="s7" style="display:none">
+  <div class="chead"><div class="ck">Step 7 · Process</div><div class="ct">Working together</div><div class="cs">How you'd like the project handled.</div></div>
+  <div class="q"><span class="ql">How should we send you updates &amp; revisions?</span>
+    <div class="chips" data-chips="feedback" data-multi>
+      <span class="chip" data-v="Email">Email</span>
+      <span class="chip" data-v="WhatsApp / Text">WhatsApp / Text</span>
+      <span class="chip" data-v="Phone / Video calls">Phone / Video Calls</span>
+      <span class="chip" data-v="Whatever is easiest">Whatever's easiest</span>
+    </div>
+    <input type="hidden" name="feedback">
+  </div>
+  <div class="q"><span class="ql">When do you need your website live?</span>
+    <div class="chips" data-chips="deadline">
+      <span class="chip" data-v="ASAP">ASAP</span>
+      <span class="chip" data-v="Within 2 weeks">2 weeks</span>
+      <span class="chip" data-v="Within 1 month">1 month</span>
+      <span class="chip" data-v="Within 2-3 months">2–3 months</span>
+      <span class="chip" data-v="No rush">No rush</span>
+    </div>
+    <input type="hidden" name="deadline">
+  </div>
+  <div class="q"><span class="ql">Anything else? <span class="opt">(optional)</span></span><textarea name="extra" placeholder="Ideas, must-haves, links to examples, special requests…"></textarea></div>
+  <div class="stepwarn"></div>
+  <div class="nav">
+    <button type="button" class="bbk" onclick="go(6)">← Back</button>
+    <button type="button" class="bnx" onclick="go(8)">Review answers →</button>
+  </div>
+</div>
+
+<!-- STEP 8 : REVIEW -->
+<div class="card" id="s8" style="display:none">
+  <div class="chead"><div class="ck">Step 8 · Review</div><div class="ct">One last look</div><div class="cs">Check everything before sending. Tap "Edit" to jump back to any section.</div></div>
+  <div id="review"></div>
+  <div class="stepwarn"></div>
+  <div class="nav">
+    <button type="button" class="bbk" onclick="go(7)">← Back</button>
+    <button type="submit" class="bnx" id="subbtn">Submit my brief ✦</button>
+  </div>
+</div>
+
+</form>
+
+<!-- SUBMITTED -->
+<div class="ty" id="ty">
+  <span class="rocket">🚀</span>
+  <div class="badge">✓&nbsp; SUBMITTED</div>
+  <h2>Your brief is in orbit!</h2>
+  <p>Thanks for trusting <strong>LogoOrbit</strong> with your website.<br>Our design team has received every detail and will<br>be in touch within 1–2 business days.</p>
+  <button type="button" class="pdfbtn" onclick="downloadPdf()">⬇ &nbsp;Download a PDF copy of your brief</button>
+</div>
+
+<div class="foot">© LogoOrbit — Professional logo, brand &amp; website design</div>
+
+</div>
+<script>
+/* ── theme ── */
+const html=document.documentElement;
+function setTheme(t){
+  html.dataset.theme=t;
+  try{localStorage.setItem('lo-theme',t)}catch(e){}
+  document.getElementById('t-light').classList.toggle('on',t==='light');
+  document.getElementById('t-dark').classList.toggle('on',t==='dark');
+}
+setTheme((()=>{try{return localStorage.getItem('lo-theme')}catch(e){return null}})()||'light');
+document.getElementById('tsw').addEventListener('click',()=>setTheme(html.dataset.theme==='light'?'dark':'light'));
+
+/* ── navigation ── */
+const TOTAL=8;
+let cur=1;
+const FORMSPREE='https://formspree.io/f/xlgpnoza';
+const STEP_OF_SECTION=[1,2,3,4,5,6,7];
+
+function validateStep(n){
+  const card=document.getElementById('s'+n);
+  let ok=true;
+  card.querySelectorAll('[data-req]').forEach(el=>{
+    const bad=!el.value.trim()||(el.type==='email'&&!/^\S+@\S+\.\S+$/.test(el.value));
+    el.classList.toggle('err',bad);
+    if(bad) ok=false;
+  });
+  card.querySelectorAll('[data-reqhidden]').forEach(el=>{ if(!el.value.trim()) ok=false; });
+  card.querySelector('.stepwarn')?.classList.toggle('show',!ok);
+  return ok;
+}
+function go(n){
+  if(n>cur&&!validateStep(cur)) return;
+  document.getElementById('s'+cur).style.display='none';
+  document.getElementById('s'+n).style.display='block';
+  cur=n;
+  const steps=document.querySelectorAll('.rstep');
+  steps.forEach((s,i)=>{
+    s.classList.toggle('done',i<n-1);
+    s.classList.toggle('cur',i===n-1);
+    if(i<n-1) s.querySelector('.dot').textContent='✓';
+    else s.querySelector('.dot').textContent=i+1;
+  });
+  const rail=document.getElementById('rail');
+  document.getElementById('railbar').style.width=((n-1)/(TOTAL-1)*(rail.offsetWidth-48))+'px';
+  if(n===8) buildReview();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── chips (single & multi) with "Other…" ── */
+document.querySelectorAll('[data-chips]').forEach(w=>{
+  const name=w.dataset.chips, multi=w.hasAttribute('data-multi');
+  const hidden=w.parentElement.querySelector('input[name="'+name+'"]');
+  const otherBox=w.parentElement.querySelector('.otherbox');
+  const otherInput=otherBox?.querySelector('[data-otherinput]');
+  const sync=()=>{
+    const vals=[...w.querySelectorAll('.on')].map(x=>x.dataset.other!==undefined?(otherInput?.value.trim()||'Other'):x.dataset.v);
+    hidden.value=vals.join(', ');
+  };
+  w.querySelectorAll('.chip,.ic-btn').forEach(c=>{
+    c.addEventListener('click',()=>{
+      if(!multi){ w.querySelectorAll('.on').forEach(x=>{if(x!==c)x.classList.remove('on');}); }
+      c.classList.toggle('on');
+      if(c.dataset.other!==undefined&&otherBox){
+        otherBox.classList.toggle('show',c.classList.contains('on'));
+        if(c.classList.contains('on')) otherInput.focus();
+      } else if(!multi&&otherBox){ otherBox.classList.remove('show'); }
+      sync();
+    });
+  });
+  otherInput?.addEventListener('input',sync);
+});
+
+/* ── palettes ── */
+(()=>{
+  const w=document.getElementById('palettes');
+  const hidden=document.querySelector('input[name="palettes_sel"]');
+  w.querySelectorAll('.pal').forEach(p=>{
+    p.addEventListener('click',()=>{
+      p.classList.toggle('on');
+      hidden.value=[...w.querySelectorAll('.pal.on')].map(x=>x.dataset.v).join('; ');
+    });
+  });
+})();
+
+/* ── colors ── */
+let selCols=[];
+function cssToHex(css){
+  const m=css.match(/\d+/g);
+  return m&&m.length>=3?'#'+m.slice(0,3).map(x=>(+x).toString(16).padStart(2,'0')).join(''):css;
+}
+document.querySelectorAll('.cp').forEach(d=>{
+  d.addEventListener('click',()=>{
+    if(d.classList.contains('on')){
+      d.classList.remove('on');
+      selCols=selCols.filter(c=>c.name!==d.dataset.v);
+    } else {
+      d.classList.add('on');
+      selCols.push({name:d.dataset.v,hex:cssToHex(getComputedStyle(d).backgroundColor)});
+    }
+    renderCols();
+  });
+});
+const cpk=document.getElementById('cpk'), chx=document.getElementById('chx');
+cpk.addEventListener('input',()=>chx.value=cpk.value);
+chx.addEventListener('input',()=>{ if(/^#[0-9a-fA-F]{6}$/.test(chx.value)) cpk.value=chx.value; });
+function addColor(){
+  const hex=/^#[0-9a-fA-F]{6}$/.test(chx.value)?chx.value:cpk.value;
+  if(!selCols.find(c=>c.hex.toLowerCase()===hex.toLowerCase())){ selCols.push({name:hex,hex:hex}); renderCols(); }
+}
+function renderCols(){
+  const w=document.getElementById('stags'); w.innerHTML='';
+  selCols.forEach((c,i)=>{
+    const el=document.createElement('div'); el.className='stag';
+    el.innerHTML=`<div class="swatch" style="background:${c.hex}"></div><span>${c.name}</span><span class="rm" onclick="rmCol(${i})">×</span>`;
+    w.appendChild(el);
+  });
+  document.querySelector('input[name="colors"]').value=selCols.map(c=>c.name+' ('+c.hex+')').join(', ');
+}
+function rmCol(i){
+  document.querySelectorAll('.cp').forEach(d=>{ if(d.dataset.v===selCols[i].name) d.classList.remove('on'); });
+  selCols.splice(i,1); renderCols();
+}
+
+/* ── brief structure (shared by review, email, PDF) ── */
+const FIELDS=[
+ ['CLIENT & BUSINESS',[
+  ['Full Name','name'],['Email','email'],['Company / Organisation','company'],
+  ['Tagline / Slogan','tagline'],['Industry / Niche','industry']]],
+ ['WEBSITE & GOALS',[
+  ['Type of Website','sitetype'],['Existing Website','existing'],['Current Website URL','existing_url'],
+  ['Main Goals','goal'],['Target Audience','audience']]],
+ ['PAGES & FEATURES',[
+  ['Pages Needed','pages'],['Features Needed','features']]],
+ ['LOOK & FEEL',[
+  ['Design Style','style'],['Light / Dark Preference','modepref'],
+  ['Reference Websites','references'],['Design to Avoid','avoid_design']]],
+ ['COLORS',[
+  ['Selected Palettes','palettes_sel'],['Preferred Colors','colors'],['Colors to Avoid','avoid_colors']]],
+ ['CONTENT, LOGO & EXTRAS',[
+  ['Text Content','content'],['Photos & Images','photos'],['Domain & Hosting','domain'],
+  ['Logo','logo'],['SEO','seo'],['Maintenance Plan','maintenance']]],
+ ['PROCESS & NOTES',[
+  ['Feedback & Revision Process','feedback'],['Launch Deadline','deadline'],['Additional Notes','extra']]]
+];
+let lastData=null;
+
+function formData(){
+  const fd=new FormData(document.getElementById('brief')); const data={};
+  fd.forEach((v,k)=>{ data[k]=(v||'').trim(); });
+  return data;
+}
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+function buildReview(){
+  const data=formData();
+  const w=document.getElementById('review');
+  w.innerHTML=FIELDS.map(([sec,rows],i)=>`
+    <div class="rev-sec">
+      <div class="rev-h"><span>${sec}</span><button type="button" onclick="go(${STEP_OF_SECTION[i]})">Edit</button></div>
+      <div class="rev-b">${rows.map(([label,key])=>`<div class="rev-row"><b>${label}</b><span>${esc(data[key]||'—')}</span></div>`).join('')}</div>
+    </div>`).join('');
+}
+
+/* ── PDF ── */
+function buildPdf(data){
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({unit:'mm',format:'a4'});
+  const W=210, M=16; let y=0;
+  doc.setFillColor(17,17,32); doc.rect(0,0,W,34,'F');
+  doc.setFillColor(79,70,229); doc.roundedRect(M,9,14,14,3,3,'F');
+  doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(9);
+  doc.text('LO',M+7,17.5,{align:'center'});
+  doc.setFontSize(17); doc.text('LogoOrbit',M+18,16);
+  doc.setFontSize(10); doc.setFont('helvetica','normal'); doc.setTextColor(185,185,235);
+  doc.text('Website Design Brief',M+18,22.5);
+  doc.setFontSize(8.5); doc.setTextColor(150,150,175);
+  doc.text('Submitted: '+new Date().toLocaleString(),W-M,16,{align:'right'});
+  doc.text((data.company||'')+'',W-M,21.5,{align:'right'});
+  y=44;
+  const pageBreak=(need)=>{ if(y+need>283){ doc.addPage(); y=18; } };
+  FIELDS.forEach(([sec,rows])=>{
+    pageBreak(16);
+    doc.setFillColor(79,70,229); doc.rect(M,y-4,2.2,6,'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(60,50,160);
+    doc.text(sec,M+5,y); y+=3;
+    doc.setDrawColor(208,208,232); doc.setLineWidth(.3); doc.line(M,y,W-M,y); y+=6;
+    rows.forEach(([label,key])=>{
+      const val=(data[key]||'').trim()||'—';
+      doc.setFont('helvetica','bold'); doc.setFontSize(8.5); doc.setTextColor(120,120,145);
+      const lines=doc.splitTextToSize(val,W-2*M-2);
+      pageBreak(7+lines.length*4.6);
+      doc.text(label.toUpperCase(),M,y); y+=4.6;
+      doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(32,32,45);
+      doc.text(lines,M,y); y+=lines.length*4.6+3.5;
+    });
+    if(sec==='COLORS'&&selCols.length){
+      pageBreak(12);
+      let x=M;
+      selCols.forEach(c=>{
+        const r=parseInt(c.hex.slice(1,3),16),g=parseInt(c.hex.slice(3,5),16),b=parseInt(c.hex.slice(5,7),16);
+        doc.setFillColor(r,g,b); doc.setDrawColor(175,175,175);
+        doc.circle(x+4,y,4,'FD'); x+=11;
+        if(x>W-M-10){x=M;y+=11;}
+      });
+      y+=11;
+    }
+    y+=3;
+  });
+  const pages=doc.getNumberOfPages();
+  for(let i=1;i<=pages;i++){
+    doc.setPage(i);
+    doc.setFontSize(8); doc.setTextColor(158,158,178);
+    doc.text('LogoOrbit — Website Design Brief  ·  Page '+i+' of '+pages,W/2,292,{align:'center'});
+  }
+  return doc;
+}
+function downloadPdf(){
+  if(!lastData) return;
+  buildPdf(lastData).save('LogoOrbit-Website-Brief-'+(lastData.company||lastData.name||'client').replace(/[^a-z0-9]+/gi,'-')+'.pdf');
+}
+
+/* ── auto-PDF from emailed link (?d=…) ── */
+(function(){
+  const p=new URLSearchParams(location.search).get('d');
+  if(!p) return;
+  try{
+    const data=JSON.parse(decodeURIComponent(escape(atob(p.replace(/-/g,'+').replace(/_/g,'/')))));
+    selCols=data._cols||[];
+    lastData=data;
+    document.getElementById('brief').style.display='none';
+    document.getElementById('rail').style.display='none';
+    document.querySelector('.hero h1').innerHTML='Client brief <em>PDF ready</em>';
+    document.querySelector('.hero p').textContent='Generating PDF for '+(data.company||data.name)+'…';
+    window.addEventListener('load',()=>setTimeout(downloadPdf,400));
+  }catch(e){}
+})();
+
+/* ── submit ── */
+document.getElementById('brief').addEventListener('submit',async function(e){
+  e.preventDefault();
+  const btn=document.getElementById('subbtn');
+  btn.disabled=true; btn.textContent='Sending…';
+  const data=formData();
+  data._cols=selCols;
+  lastData=data;
+
+  // one-paragraph plain-English summary of what the client needs
+  const v=k=>(data[k]||'').trim();
+  let para=`${v('name')||'A client'} from ${v('company')||'an unnamed company'} (${v('industry')||'industry not given'}) needs a ${v('sitetype')||'website'}`+(v('tagline')?` — tagline "${v('tagline')}"`:'')+`. `;
+  para+=`Existing site: ${v('existing')||'—'}`+(v('existing_url')?` (${v('existing_url')})`:'')+`. `;
+  if(v('goal')) para+=`Main goals: ${v('goal')}. `;
+  if(v('audience')) para+=`Audience: ${v('audience')}. `;
+  if(v('pages')) para+=`Pages: ${v('pages')}. `;
+  if(v('features')) para+=`Features: ${v('features')}. `;
+  if(v('style')) para+=`Style: ${v('style')}`+(v('modepref')?` (${v('modepref')})`:'')+`. `;
+  if(v('references')) para+=`Reference sites: ${v('references')}. `;
+  if(v('avoid_design')) para+=`Avoid: ${v('avoid_design')}. `;
+  const colorBits=[v('palettes_sel'),v('colors')].filter(Boolean).join('; ');
+  if(colorBits) para+=`Colors: ${colorBits}. `;
+  if(v('avoid_colors')) para+=`No ${v('avoid_colors')}. `;
+  para+=`Content: ${v('content')||'—'}. Photos: ${v('photos')||'—'}. Domain/hosting: ${v('domain')||'—'}. `;
+  para+=`Logo: ${v('logo')||'—'}. SEO: ${v('seo')||'—'}. Maintenance: ${v('maintenance')||'—'}. `;
+  if(v('feedback')) para+=`Prefers updates via ${v('feedback')}. `;
+  if(v('deadline')) para+=`Deadline: ${v('deadline')}. `;
+  if(v('extra')) para+=`Extra notes: ${v('extra')}.`;
+
+  let summary='WEBSITE DESIGN BRIEF — LogoOrbit\n'+'='.repeat(40)+'\n\n📋 CLIENT SUMMARY\n'+'-'.repeat(30)+'\n'+para+'\n';
+  FIELDS.forEach(([sec,rows])=>{
+    summary+='\n■ '+sec+'\n'+'-'.repeat(30)+'\n';
+    rows.forEach(([label,key])=>{ summary+=label+': '+((data[key]||'').trim()||'—')+'\n'; });
+  });
+  const enc=btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g,'-').replace(/\//g,'_');
+  const pdfLink=location.origin+location.pathname+'?d='+enc;
+  summary+='\n'+'='.repeat(40)+'\nDOWNLOAD THIS BRIEF AS PDF (one click):\n'+pdfLink+'\n';
+
+  try{
+    const res=await fetch(FORMSPREE,{method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({
+        brief_type:'Website', client_summary:para, summary, pdf_link:pdfLink, ...Object.fromEntries(Object.entries(data).filter(([k])=>k!=='_cols')),
+        _replyto:data.email,
+        _subject:'💻 New Website Brief — '+(data.company||data.name||'Client')
+      })});
+    if(!res.ok) throw new Error('status '+res.status);
+    document.getElementById('brief').style.display='none';
+    document.getElementById('rail').style.display='none';
+    document.getElementById('ty').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  } catch(err){
+    btn.disabled=false; btn.textContent='Submit my brief ✦';
+    alert('Something went wrong sending your brief. Please try again.\n'+err.message);
+  }
+});
+</script>
+</body>
+</html>
