@@ -4,10 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LogoOrbit - Logo Design Brief</title>
+<meta name="description" content="Tell us about your dream logo in about 4 minutes. Tap-to-answer brief for styles, colors and logo types - LogoOrbit's design team takes it from there.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='30' fill='%234f46e5'/><ellipse cx='50' cy='50' rx='46' ry='18' fill='none' stroke='%237c3aed' stroke-width='7' transform='rotate(-24 50 50)'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>window.jspdf||document.write('<script src="jspdf.umd.min.js"><\/script>')</script>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('lo-theme')||'light'}catch(e){}</script>
 <style>
 /* ─────────── THEME TOKENS ─────────── */
 :root{
@@ -561,6 +563,7 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
 <div class="foot">© LogoOrbit - Professional logo &amp; brand design</div>
 
 </div>
+<script src="jspdf.umd.min.js"></script>
 <script>
 /* ── theme ── */
 const html=document.documentElement;
@@ -572,6 +575,12 @@ function setTheme(t){
 }
 setTheme((()=>{try{return localStorage.getItem('lo-theme')}catch(e){return null}})()||'light');
 document.getElementById('tsw').addEventListener('click',()=>setTheme(html.dataset.theme==='light'?'dark':'light'));
+/* keyboard access for tap targets */
+document.querySelectorAll('.chip,.ic-btn,.pal,.cp,.ao,.tswitch').forEach(el=>{
+  el.tabIndex=0;el.setAttribute('role','button');
+  if(el.dataset.v)el.setAttribute('aria-label',el.dataset.v);
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click();}});
+});
 function tg(id){document.getElementById(id).classList.toggle('show')}
 function ao(el){el.classList.toggle('on');el.querySelector('.add').textContent=el.classList.contains('on')?'\u2713 Added to your brief':'+ Add';document.querySelector('input[name="addons"]').value=[...document.querySelectorAll('.ao.on')].map(x=>x.dataset.v).join(', ');}
 
@@ -837,9 +846,10 @@ function downloadPdf(){
 })();
 
 /* ── short link (is.gd, falls back to full URL) ── */
+const tmo=ms=>AbortSignal.timeout?AbortSignal.timeout(ms):undefined;
 async function shortenUrl(u){
   try{
-    const r=await fetch('https://is.gd/create.php?format=simple&url='+encodeURIComponent(u),{signal:AbortSignal.timeout(5000)});
+    const r=await fetch('https://is.gd/create.php?format=simple&url='+encodeURIComponent(u),{signal:tmo(5000)});
     if(r.ok){ const t=(await r.text()).trim(); if(/^https?:\/\/is\.gd\//.test(t)) return t; }
   }catch(e){}
   return u;
@@ -880,7 +890,7 @@ document.getElementById('brief').addEventListener('submit',async function(e){
     };
     let res=null;
     for(let a=0;a<2;a++){
-      try{res=await fetch(FORMSPREE,{method:'POST',headers:{'Accept':'application/json'},signal:AbortSignal.timeout(15000),body:new URLSearchParams(payload)});}catch(e2){res=null;}
+      try{res=await fetch(FORMSPREE,{method:'POST',headers:{'Accept':'application/json'},signal:tmo(15000),body:new URLSearchParams(payload)});}catch(e2){res=null;}
       if(res&&res.ok)break;
     }
     if(!res||!res.ok) throw new Error('no response');

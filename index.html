@@ -4,8 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LogoOrbit - Start Your Project Brief</title>
+<meta name="description" content="Start your LogoOrbit project brief - pick a logo or website brief and answer a few quick, tap-friendly questions. Our design team takes it from there.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='30' fill='%234f46e5'/><ellipse cx='50' cy='50' rx='46' ry='18' fill='none' stroke='%237c3aed' stroke-width='7' transform='rotate(-24 50 50)'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('lo-theme')||'light'}catch(e){}</script>
 <script>
 /* legacy emailed PDF links pointed at index.html?d=… when it was the logo form */
 (function(){ if(new URLSearchParams(location.search).get('d')) location.replace('logo.html'+location.search); })();
@@ -171,7 +175,10 @@ function setTheme(t){
   document.getElementById('t-dark').classList.toggle('on',t==='dark');
 }
 setTheme((()=>{try{return localStorage.getItem('lo-theme')}catch(e){return null}})()||'light');
-document.getElementById('tsw').addEventListener('click',()=>setTheme(html.dataset.theme==='light'?'dark':'light'));
+const tsw=document.getElementById('tsw');
+tsw.addEventListener('click',()=>setTheme(html.dataset.theme==='light'?'dark':'light'));
+tsw.tabIndex=0;tsw.setAttribute('role','button');tsw.setAttribute('aria-label','Toggle theme');
+tsw.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();tsw.click();}});
 </script>
 </body>
 </html>
