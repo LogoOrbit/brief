@@ -94,6 +94,14 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);background-
 .pbadge{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;border-radius:100px;padding:4px 11px;margin-bottom:8px;background:var(--accent);color:#fff}
 .promo.gold .pbadge{background:#d97706}
 .pnote{font-size:12.5px;color:var(--text2);margin-top:8px;line-height:1.5}
+.chip.no:hover{border-color:var(--err);color:var(--err)}
+.chip.no.on{background:var(--err);border-color:var(--err);color:#fff}
+.promo{animation:promoGlow 2.6s ease-in-out infinite}
+@keyframes promoGlow{0%,100%{box-shadow:0 0 0 0 rgba(79,70,229,.22)}50%{box-shadow:0 0 20px 4px rgba(79,70,229,.20)}}
+.promo.gold{animation:goldGlow 2.6s ease-in-out infinite}
+@keyframes goldGlow{0%,100%{box-shadow:0 0 0 0 rgba(217,119,6,.25)}50%{box-shadow:0 0 20px 4px rgba(217,119,6,.22)}}
+.pbadge{animation:badgeBounce 2s ease-in-out infinite}
+@keyframes badgeBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.5px)}}
 
 input[type=text],input[type=email],textarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:14.5px;padding:12px 15px;outline:none;transition:border-color .2s,box-shadow .2s}
 input:focus,textarea:focus{border-color:var(--accent);box-shadow:var(--ring);background:var(--surface)}
@@ -427,7 +435,7 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
   <div class="q promo"><span class="pbadge">⭐ Most popular</span><span class="ql">Want a website with your new logo? <span class="req">*</span></span>
     <div class="chips" data-chips="website">
       <span class="chip yes" data-v="YES, I'd like a website">✓ YES, I'd like one</span>
-      <span class="chip" data-v="NO">NO</span>
+      <span class="chip no" data-v="NO">NO</span>
       <span class="chip" data-v="Depends on price/cost">Depends on Price</span>
       <span class="chip" data-v="I already have a website">Already have one</span>
     </div>
@@ -437,7 +445,7 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
   <div class="q promo gold"><span class="pbadge">🛡 Protect your brand</span><span class="ql">Want a USPTO trademark for your logo? <span class="req">*</span></span>
     <div class="chips" data-chips="trademark">
       <span class="chip yes" data-v="YES">✓ YES</span>
-      <span class="chip" data-v="NO">NO</span>
+      <span class="chip no" data-v="NO">NO</span>
       <span class="chip" data-v="Tell me more first">Tell me more first</span>
     </div>
     <div class="pnote">A registered trademark legally stops competitors from copying your logo.</div>
@@ -452,14 +460,14 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
     <div class="otherbox"><input type="text" data-otherinput placeholder="Describe your requirements…"></div>
     <input type="hidden" name="copyright" data-reqhidden>
   </div>
-  <div class="q"><span class="ql">Want business cards printed?</span>
+  <div class="q promo gold"><span class="pbadge">💼 Popular add-on</span><span class="ql">Want business cards printed?</span>
     <div class="chips" data-chips="bizcards">
-      <span class="chip" data-v="100 Cards - $99">100 - $99</span>
-      <span class="chip" data-v="250 Cards - $175">250 - $175</span>
-      <span class="chip" data-v="500 Cards - $285">500 - $285</span>
-      <span class="chip" data-v="1,000 Cards - $350">1,000 - $350</span>
+      <span class="chip yes" data-v="100 Cards - $99">100 - $99</span>
+      <span class="chip yes" data-v="250 Cards - $175">250 - $175</span>
+      <span class="chip yes" data-v="500 Cards - $285">500 - $285</span>
+      <span class="chip yes" data-v="1,000 Cards - $350">1,000 - $350</span>
       <span class="chip" data-v="Maybe">Maybe</span>
-      <span class="chip" data-v="No thanks">No thanks</span>
+      <span class="chip no" data-v="No thanks">No thanks</span>
       <span class="chip" data-other>Other…</span>
     </div>
     <div class="otherbox"><input type="text" data-otherinput placeholder="Tell us more…"></div>

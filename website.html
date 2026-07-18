@@ -94,6 +94,14 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);background-
 .pbadge{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;border-radius:100px;padding:4px 11px;margin-bottom:8px;background:var(--accent);color:#fff}
 .promo.gold .pbadge{background:#d97706}
 .pnote{font-size:12.5px;color:var(--text2);margin-top:8px;line-height:1.5}
+.chip.no:hover{border-color:var(--err);color:var(--err)}
+.chip.no.on{background:var(--err);border-color:var(--err);color:#fff}
+.promo{animation:promoGlow 2.6s ease-in-out infinite}
+@keyframes promoGlow{0%,100%{box-shadow:0 0 0 0 rgba(79,70,229,.22)}50%{box-shadow:0 0 20px 4px rgba(79,70,229,.20)}}
+.promo.gold{animation:goldGlow 2.6s ease-in-out infinite}
+@keyframes goldGlow{0%,100%{box-shadow:0 0 0 0 rgba(217,119,6,.25)}50%{box-shadow:0 0 20px 4px rgba(217,119,6,.22)}}
+.pbadge{animation:badgeBounce 2s ease-in-out infinite}
+@keyframes badgeBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.5px)}}
 
 input[type=text],input[type=email],input[type=tel],textarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:14.5px;padding:12px 15px;outline:none;transition:border-color .2s,box-shadow .2s}
 input:focus,textarea:focus{border-color:var(--accent);box-shadow:var(--ring);background:var(--surface)}
@@ -548,7 +556,7 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
   <div class="q promo gold"><span class="pbadge">🔍 Get found on Google</span><span class="ql">Want SEO to rank on Google? <span class="req">*</span></span>
     <div class="chips" data-chips="seo">
       <span class="chip yes" data-v="YES">✓ YES</span>
-      <span class="chip" data-v="NO">NO</span>
+      <span class="chip no" data-v="NO">NO</span>
       <span class="chip" data-v="Tell me more first">Tell me more first</span>
     </div>
     <div class="pnote">SEO helps your website rank higher on Google so new customers find you without ads.</div>
@@ -557,7 +565,7 @@ input[type=color]{width:40px;height:36px;border-radius:10px;border:1.5px solid v
   <div class="q"><span class="ql">Want maintenance after launch? <span class="req">*</span> <span class="opt">(updates, backups, edits)</span></span>
     <div class="chips" data-chips="maintenance">
       <span class="chip yes" data-v="YES">✓ YES</span>
-      <span class="chip" data-v="NO, I'll manage it myself">NO, I'll manage it</span>
+      <span class="chip no" data-v="NO, I'll manage it myself">NO, I'll manage it</span>
       <span class="chip" data-v="Maybe, tell me options">Maybe, tell me options</span>
     </div>
     <input type="hidden" name="maintenance" data-reqhidden>
