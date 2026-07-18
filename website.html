@@ -971,24 +971,27 @@ document.getElementById('brief').addEventListener('submit',async function(e){
   const shortLink=await shortenUrl(pdfLink);
 
   try{
-    const res=await fetch(FORMSPREE,{method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},signal:AbortSignal.timeout(20000),
-      body:JSON.stringify({
-        '01 · WHAT THE CLIENT WANTS (summary)':para,
-        '02 · FULL BRIEF':brief.trim(),
-        '03 · DOWNLOAD BRIEF AS PDF':shortLink,
-        '04 · Client Name':data.name,'05 · Client Email':data.email,'06 · Company':data.company,'07 · Phone':data.phone||'-',
-        _replyto:data.email,
-        _subject:'💻 New Website Brief - '+(data.company||data.name||'Client')
-      })});
-    if(!res.ok) throw new Error('status '+res.status);
+    const payload={
+      '01 WHAT THE CLIENT WANTS (summary)':para,
+      '02 FULL BRIEF':brief.trim(),
+      '03 DOWNLOAD BRIEF AS PDF':shortLink,
+      '04 Client Name':data.name,'05 Client Email':data.email,'06 Company':data.company,'07 Phone':data.phone||'-',
+      _replyto:data.email,
+      _subject:'New Website Brief - '+(data.company||data.name||'Client')
+    };
+    let res=null;
+    for(let a=0;a<2;a++){
+      try{res=await fetch(FORMSPREE,{method:'POST',headers:{'Accept':'application/json'},signal:AbortSignal.timeout(15000),body:new URLSearchParams(payload)});}catch(e2){res=null;}
+      if(res&&res.ok)break;
+    }
+    if(!res||!res.ok) throw new Error('no response');
     document.getElementById('brief').style.display='none';
     document.getElementById('rail').style.display='none';
     document.getElementById('ty').style.display='block';
     window.scrollTo(0,0);
   } catch(err){
-    btn.disabled=false; btn.textContent='Submit my brief ✦';
-    alert('Something went wrong sending your brief. Please try again.\n'+err.message);
+    btn.disabled=false; btn.textContent='Try again';
+    alert('Could not send your brief. Please check your internet connection and tap Try again.');
   }
 });
 </script>
