@@ -947,10 +947,13 @@ function downloadPdf(){
 })();
 
 /* ── short link (is.gd, falls back to full URL) ── */
-const tmo=ms=>AbortSignal.timeout?AbortSignal.timeout(ms):undefined;
+const tmo=ms=>{
+  if(AbortSignal.timeout) return AbortSignal.timeout(ms);
+  const c=new AbortController(); setTimeout(()=>c.abort(),ms); return c.signal;
+};
 async function shortenUrl(u){
   try{
-    const r=await fetch('https://is.gd/create.php?format=simple&url='+encodeURIComponent(u),{signal:tmo(5000)});
+    const r=await fetch('https://is.gd/create.php?format=simple&url='+encodeURIComponent(u),{signal:tmo(3000)});
     if(r.ok){ const t=(await r.text()).trim(); if(/^https?:\/\/is\.gd\//.test(t)) return t; }
   }catch(e){}
   return u;
@@ -976,11 +979,10 @@ document.getElementById('brief').addEventListener('submit',async function(e){
     brief+='━━━━━━━━━━━━━━━━━━━━━━━\n'+sec+'\n━━━━━━━━━━━━━━━━━━━━━━━\n\n';
     filled.forEach(([label,key])=>{ brief+='▸ '+label+'\n   '+data[key].trim().replace(/\n/g,'\n   ')+'\n\n'; });
   });
-  const enc=btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g,'-').replace(/\//g,'_');
-  const pdfLink=location.origin+location.pathname+'?d='+enc;
-  const shortLink=await shortenUrl(pdfLink);
-
   try{
+    const enc=btoa(unescape(encodeURIComponent(JSON.stringify(data)))).replace(/\+/g,'-').replace(/\//g,'_');
+    const pdfLink=location.origin+location.pathname+'?d='+enc;
+    const shortLink=await shortenUrl(pdfLink);
     const payload={
       '01 WHAT THE CLIENT WANTS (summary)':para,
       '02 FULL BRIEF':brief.trim(),
@@ -991,10 +993,11 @@ document.getElementById('brief').addEventListener('submit',async function(e){
     };
     let res=null;
     for(let a=0;a<2;a++){
-      try{res=await fetch(FORMSPREE,{method:'POST',headers:{'Accept':'application/json'},signal:tmo(15000),body:new URLSearchParams(payload)});}catch(e2){res=null;}
+      try{res=await fetch(FORMSPREE,{method:'POST',headers:{'Accept':'application/json'},signal:tmo(10000),body:new URLSearchParams(payload)});}catch(e2){res=null;}
       if(res&&res.ok)break;
     }
     if(!res||!res.ok) throw new Error('no response');
+    btn.textContent='Sent ✓';
     document.getElementById('brief').style.display='none';
     document.getElementById('rail').style.display='none';
     document.getElementById('ty').style.display='block';
