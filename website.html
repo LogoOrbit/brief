@@ -676,6 +676,8 @@ function ao(el){el.classList.toggle('on');el.querySelector('.add').textContent=e
 const TOTAL=9;
 let cur=1;
 const FORMSPREE='https://formspree.io/f/xlgpnoza';
+const CRM_INTAKE='https://logoorbit-crm.vercel.app/api/briefs/intake';
+const CRM_SUBMISSION_ID=(crypto.randomUUID?crypto.randomUUID():(Date.now()+'-'+Math.random().toString(36).slice(2)));
 const STEP_OF_SECTION=[1,2,3,4,5,6,7,8];
 
 function validateStep(n){
@@ -997,6 +999,16 @@ document.getElementById('brief').addEventListener('submit',async function(e){
       if(res&&res.ok)break;
     }
     if(!res||!res.ok) throw new Error('no response');
+    const crmRes=await fetch(CRM_INTAKE,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      signal:tmo(10000),
+      body:JSON.stringify({
+        submissionId:CRM_SUBMISSION_ID,type:'website',name:data.name,email:data.email,
+        company:data.company||null,phone:data.phone||null,summary:para,pdfUrl:shortLink,data
+      })
+    });
+    if(!crmRes.ok) throw new Error('CRM intake failed');
     btn.textContent='Sent ✓';
     document.getElementById('brief').style.display='none';
     document.getElementById('rail').style.display='none';
